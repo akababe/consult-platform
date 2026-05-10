@@ -87,7 +87,7 @@
     "difficulty": "Advanced",
     "region": "Vietnam / Global",
     "readTime": "37 min",
-    "status": "coming-soon"
+    "status": "published"
   },
   {
     "id": "case-07",
@@ -102,7 +102,7 @@
     "difficulty": "Advanced",
     "region": "Southeast Asia",
     "readTime": "34 min",
-    "status": "coming-soon"
+    "status": "published"
   },
   {
     "id": "case-08",
@@ -117,7 +117,7 @@
     "difficulty": "Advanced",
     "region": "Global",
     "readTime": "41 min",
-    "status": "coming-soon"
+    "status": "published"
   },
   {
     "id": "case-09",
@@ -132,7 +132,7 @@
     "difficulty": "Advanced",
     "region": "South & Southeast Asia",
     "readTime": "33 min",
-    "status": "coming-soon"
+    "status": "published"
   },
   {
     "id": "case-10",
@@ -147,6 +147,6 @@
     "difficulty": "Advanced",
     "region": "Global",
     "readTime": "39 min",
-    "status": "coming-soon"
+    "status": "published"
   }
 ]
