@@ -3,69 +3,52 @@ name: Build & Deploy
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
           cache-dependency-path: |
             package-lock.json
             client/package-lock.json
-            server/package-lock.json
 
-      - name: Install root deps
-        run: npm install
+      - name: Install deps
+        run: npm install && cd client && npm install
 
-      - name: Install client deps
-        run: cd client && npm install
+      - name: Build
+        run: cd client && npm run build
 
-      - name: Install server deps
-        run: cd server && npm install
+      - name: Copy index.html as 404.html for SPA routing
+        run: cp client/dist/index.html client/dist/404.html
 
-      - name: Build client
-        run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: client/dist
 
-      - name: Verify dist exists
-        run: ls -la server/dist/
-
-      # ── DEPLOY (Railway / Render / VPS) ──────────────────────
-      # Uncomment the deployment method you use:
-
-      # Option A — Railway (set RAILWAY_TOKEN in repo secrets)
-      # - name: Deploy to Railway
-      #   uses: bervProject/railway-deploy@main
-      #   with:
-      #     railway_token: ${{ secrets.RAILWAY_TOKEN }}
-      #     service: consulting-platform
-
-      # Option B — Render (set RENDER_DEPLOY_HOOK_URL in repo secrets)
-      # - name: Deploy to Render
-      #   run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-
-      # Option C — VPS via SSH (set SSH_HOST, SSH_USER, SSH_KEY in secrets)
-      # - name: Deploy to VPS
-      #   uses: appleboy/ssh-action@v1
-      #   with:
-      #     host:     ${{ secrets.SSH_HOST }}
-      #     username: ${{ secrets.SSH_USER }}
-      #     key:      ${{ secrets.SSH_KEY }}
-      #     script: |
-      #       cd /var/www/consulting-platform
-      #       git pull origin main
-      #       npm run install:all
-      #       npm run build
-      #       pm2 restart consulting-platform
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

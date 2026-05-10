@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  base: '/consult-platform/',
   server: {
     proxy: {
       '/api': {
@@ -12,7 +13,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: '../server/dist',
+    outDir: 'dist',
     emptyOutDir: true,
   },
 })
