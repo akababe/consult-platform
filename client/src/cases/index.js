@@ -1,0 +1,180 @@
+// ── CASE REGISTRY ────────────────────────────────────────────
+// To add a new case: create the JSX file, import it here, add one entry.
+
+import Case01 from './Case01_MarginCollapse.jsx'
+import Case02 from './Case02_CustomerExodus.jsx'
+import Case03 from './Case03_LastDecadeOfCoal.jsx'
+import Case04 from './Case04_UnitEconomicsTrap.jsx'
+import Case05 from './Case05_DrugLaunch.jsx'
+import Case06 from './Case06_SupplyChain.jsx'
+import Case07 from './Case07_LoyaltyParadox.jsx'
+import Case08 from './Case08_AcquisitionTrap.jsx'
+import Case09 from './Case09_MarketSizing.jsx'
+import Case10 from './Case10_OrgExecution.jsx'
+
+export const cases = [
+  {
+    id: 'case-01',
+    slug: 'margin-collapse',
+    number: '01',
+    title: 'The Margin Collapse',
+    subtitle: 'When SKU proliferation hollows out the portfolio from inside',
+    industry: 'FMCG / Consumer Goods',
+    firm: 'BCG',
+    framework: 'Profit Tree + BCG Matrix + Price Elasticity',
+    decisionType: 'Portfolio Rationalization + Margin Recovery',
+    difficulty: 'Advanced',
+    region: 'Indonesia',
+    readTime: '35 min',
+    accentColor: '#C4472A',
+    component: Case01,
+  },
+  {
+    id: 'case-02',
+    slug: 'customer-exodus',
+    number: '02',
+    title: 'The Profitable Customer Exodus',
+    subtitle: 'When 96% retention hides a collapsing revenue model',
+    industry: 'Retail Banking',
+    firm: 'McKinsey',
+    framework: 'CLV + Cost-to-Serve',
+    decisionType: 'Digital Transformation',
+    difficulty: 'Advanced',
+    region: 'Southeast Asia',
+    readTime: '38 min',
+    accentColor: '#2A5C8B',
+    component: Case02,
+  },
+  {
+    id: 'case-03',
+    slug: 'last-decade-of-coal',
+    number: '03',
+    title: 'The Last Decade of Coal',
+    subtitle: 'Retiring assets before the market does it for you',
+    industry: 'Energy & Resources',
+    firm: 'McKinsey',
+    framework: 'Scenario DCF + Portfolio Optimisation',
+    decisionType: 'Asset Retirement + Capital Reallocation',
+    difficulty: 'Advanced',
+    region: 'Australia',
+    readTime: '42 min',
+    accentColor: '#2E7D52',
+    component: Case03,
+  },
+  {
+  id: 'case-04',               // unique, kebab-case
+  slug: 'unit-economics-trap', // becomes the URL: /case/unit-economics-trap
+  number: '04',                // display number on the card
+  title: 'The Unit Economics Trap',
+  subtitle: 'When the cohort data says something the investor deck does not',
+  industry: 'Tech / SaaS',    // used by the industry filter
+  firm: 'Bain',               // used by the firm filter — BCG | McKinsey | Bain
+  framework: 'Cohort LTV/CAC + Funnel Decomposition',
+  decisionType: 'Restructure or Raise',
+  difficulty: 'Advanced',
+  region: 'Indonesia / Southeast Asia',
+  readTime: '36 min',
+  accentColor: '#7B3FC4',     // the top border colour on the card
+  component: Case04,          // points to the import above
+},
+  {
+    id: 'case-05',
+    slug: 'drug-launch',
+    number: '05',
+    title: 'The Drug That Cannot Launch Everywhere',
+    subtitle: 'When the science is ready but the market is not',
+    industry: 'Healthcare & Pharma',
+    firm: 'McKinsey',
+    framework: 'Patient Journey + Payer Economics',
+    decisionType: 'Market Prioritization',
+    difficulty: 'Advanced',
+    region: 'Asia Pacific',
+    readTime: '40 min',
+    accentColor: '#C47A2A',
+    component: Case05,
+  },
+  
+  {
+    id: 'case-06',
+    slug: 'supply-chain-broke',
+    number: '06',
+    title: 'The Supply Chain That Broke',
+    subtitle: 'Make, buy, or partner — and which parts of what',
+    industry: 'Industrial / Manufacturing',
+    firm: 'BCG',
+    framework: 'Value Chain + Make-vs-Buy',
+    decisionType: 'Vertical Integration',
+    difficulty: 'Advanced',
+    region: 'Vietnam / Global',
+    readTime: '37 min',
+    accentColor: '#2A7B8B',
+    component: Case06,
+  },
+  {
+    id: 'case-07',
+    slug: 'loyalty-paradox',
+    number: '07',
+    title: 'The Loyalty Paradox',
+    subtitle: 'When your best customers cost the most to keep',
+    industry: 'Retail (Omnichannel)',
+    firm: 'Bain',
+    framework: 'NPS + Category Management + CLV',
+    decisionType: 'Omnichannel Investment',
+    difficulty: 'Advanced',
+    region: 'Southeast Asia',
+    readTime: '34 min',
+    accentColor: '#8B2A5C',
+    component: Case07,
+  },
+  {
+    id: 'case-08',
+    slug: 'acquisition-trap',
+    number: '08',
+    title: 'The Acquisition That Should Not Happen',
+    subtitle: 'When synergies are stories and the price is certain',
+    industry: 'M&A / Private Equity',
+    firm: 'McKinsey',
+    framework: 'Due Diligence + Synergy Modelling',
+    decisionType: 'Buy / Don\'t Buy',
+    difficulty: 'Advanced',
+    region: 'Global',
+    readTime: '41 min',
+    accentColor: '#C4472A',
+    component: Case08,
+  },
+  {
+    id: 'case-09',
+    slug: 'market-sizing',
+    number: '09',
+    title: 'The Market That Looks Big but Isn\'t',
+    subtitle: 'TAM is not your market. Your market is much smaller.',
+    industry: 'Consumer / Expansion',
+    firm: 'BCG',
+    framework: 'Market Sizing + Porter\'s Five Forces',
+    decisionType: 'Geographic Expansion',
+    difficulty: 'Advanced',
+    region: 'South & Southeast Asia',
+    readTime: '33 min',
+    accentColor: '#5C8B2A',
+    component: Case09,
+  },
+  {
+    id: 'case-10',
+    slug: 'org-execution',
+    number: '10',
+    title: 'The Organisation That Cannot Execute',
+    subtitle: 'The strategy is right. The structure is killing it.',
+    industry: 'Cross-Industry (Post-Merger)',
+    firm: 'McKinsey',
+    framework: 'McKinsey 7S + Change Readiness',
+    decisionType: 'Post-Merger Integration',
+    difficulty: 'Advanced',
+    region: 'Global',
+    readTime: '39 min',
+    accentColor: '#8B6B2A',
+    component: Case10,
+  },
+]
+
+export const getCaseBySlug = (slug) => cases.find(c => c.slug === slug)
+export const getCaseById   = (id)   => cases.find(c => c.id === id)
