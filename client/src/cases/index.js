@@ -11,6 +11,10 @@ import Case07 from './Case07_LoyaltyParadox.jsx'
 import Case08 from './Case08_AcquisitionTrap.jsx'
 import Case09 from './Case09_MarketSizing.jsx'
 import Case10 from './Case10_OrgExecution.jsx'
+import Case11 from './Case11_SystemsThinking';
+import Case12 from './Case12_BusinessFluency';
+import Case13 from './Case13_DataSense';
+import Case14 from './Case14_ExecutiveCommunication';
 
 export const cases = [
   {
@@ -174,6 +178,85 @@ export const cases = [
     accentColor: '#8B6B2A',
     component: Case10,
   },
+{
+    id: 'case-11',
+    slug: 'deposit-growth',
+    number: '11',
+    title: 'The Bank That Cannot Grow Its Deposits',
+    subtitle: 'The problem is not the interest rate. It is the system.',
+    industry: 'Retail Banking',
+    firm: 'Internal BA Team',
+    framework: 'Deposit Funnel Analysis + Incentive Mapping',
+    decisionType: 'Operational Turnaround',
+    difficulty: 'Intermediate',
+    region: 'Indonesia (Java & Sumatra)',
+    readTime: '28 min',
+    accentColor: '#1A5276',
+    week: 1,
+    skill: 'Systems Thinking',
+    deliverable: 'Business Situation Map',
+    component: Case11,
+  },
+
+  {
+    id: 'case-12',
+    slug: 'insurance-profit-quality',
+    number: '12',
+    title: 'The Insurance Company That Looks Healthy But Isn\'t',
+    subtitle: 'The headline says profit. The combined ratio says something else.',
+    industry: 'General Insurance',
+    firm: 'Internal CFO Review',
+    framework: 'Combined Ratio Decomposition + Profit Quality Analysis',
+    decisionType: 'Strategic Risk Assessment',
+    difficulty: 'Intermediate',
+    region: 'Indonesia (Jakarta)',
+    readTime: '32 min',
+    accentColor: '#1E8449',
+    week: 2,
+    skill: 'Business Fluency',
+    deliverable: 'Executive Risk Brief',
+    component: Case12,
+  },
+
+  {
+    id: 'case-13',
+    slug: 'lending-conflicting-signals',
+    number: '13',
+    title: 'The Lending Business With Three Conflicting Signals',
+    subtitle: 'Everyone is right. Only one signal predicts the future.',
+    industry: 'Consumer Lending / Multifinance',
+    firm: 'Internal Risk Review',
+    framework: 'Vintage Analysis + Leading vs Lagging Indicators',
+    decisionType: 'Credit Committee Decision',
+    difficulty: 'Advanced',
+    region: 'Indonesia (Surabaya)',
+    readTime: '35 min',
+    accentColor: '#7D3C98',
+    week: 3,
+    skill: 'Data Sense',
+    deliverable: 'Defensible Decision Memo',
+    component: Case13,
+  },
+  {
+    id: 'case-14',
+    slug: 'board-executive-communication',
+    number: '14',
+    title: 'The Board That Needs to Hear Something It Does Not Want to Hear',
+    subtitle: 'Three slides. Twenty minutes. One chance to get it right.',
+    industry: 'Islamic Banking / Syariah Finance',
+    firm: 'Internal Audit Committee Review',
+    framework: 'Minto Pyramid (SCR) + Situation-Complication-Resolution',
+    decisionType: 'Board-Level Strategic Intervention',
+    difficulty: 'Advanced',
+    region: 'Indonesia (National)',
+    readTime: '38 min',
+    accentColor: '#B7410E',
+    week: 4,
+    skill: 'Executive Communication',
+    deliverable: '3-Slide Executive Presentation',
+    component: Case14,
+  },
+
 ]
 
 export const getCaseBySlug = (slug) => cases.find(c => c.slug === slug)
