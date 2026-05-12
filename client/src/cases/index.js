@@ -261,7 +261,7 @@ export const cases = [
   {
   id: 'case-15',
   slug: 'preliminary-study',
-  number: '00',           // Displayed as "00" — sits before Case 01
+  number: '15',           // Displayed as "00" — sits before Case 01
   title: 'Before You Read a Case — How a Business Analyst Actually Thinks',
   subtitle: 'Read this first. Everything else makes more sense after.',
   industry: 'Cross-Industry Foundation',
