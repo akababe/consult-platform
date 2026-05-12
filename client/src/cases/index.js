@@ -15,8 +15,10 @@ import Case11 from './Case11_SystemsThinking';
 import Case12 from './Case12_BusinessFluency';
 import Case13 from './Case13_DataSense';
 import Case14 from './Case14_ExecutiveCommunication';
+import Case15 from './Case15_PreliminaryStudy';
 
 export const cases = [
+  
   {
     id: 'case-01',
     slug: 'margin-collapse',
@@ -256,6 +258,25 @@ export const cases = [
     deliverable: '3-Slide Executive Presentation',
     component: Case14,
   },
+  {
+  id: 'case-15',
+  slug: 'preliminary-study',
+  number: '00',           // Displayed as "00" — sits before Case 01
+  title: 'Before You Read a Case — How a Business Analyst Actually Thinks',
+  subtitle: 'Read this first. Everything else makes more sense after.',
+  industry: 'Cross-Industry Foundation',
+  firm: 'All Cases',
+  framework: 'Problem Structuring + Symptom vs Cause + Framework Selection + Defensible Recommendations + Executive Communication',
+  decisionType: 'Foundational Study',
+  difficulty: 'Foundational',
+  region: 'Cross-Regional',
+  readTime: '42 min',
+  accentColor: '#2C3E50',   // Charcoal — neutral, foundational, serious
+  isPreliminary: true,      // Flag for UI: render with different badge style
+  pinned: true,             // Flag for UI: always show first in library
+  component: Case15,
+},
+
 
 ]
 
