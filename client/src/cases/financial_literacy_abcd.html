@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Literacy — Modules A B C D</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f8f7f4;color:#1a1a18;min-height:100vh}
+.top-nav{display:flex;background:#fff;border-bottom:1px solid #e5e3db;position:sticky;top:0;z-index:100;overflow-x:auto}
+.mn{padding:14px 20px;font-size:13px;font-weight:600;color:#888;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;transition:color .15s}
+.mn:hover{color:#333}
+.mn.ma.on{color:#C94F28;border-bottom-color:#C94F28}
+.mn.mb.on{color:#1357A6;border-bottom-color:#1357A6}
+.mn.mc.on{color:#4A41A8;border-bottom-color:#4A41A8}
+.mn.md.on{color:#0D6B50;border-bottom-color:#0D6B50}
+.mod{display:none}.mod.on{display:block}
+.sub-nav{display:flex;background:#fff;border-bottom:1px solid #e5e3db;padding:0 24px;overflow-x:auto}
+.sn{padding:10px 16px;font-size:12px;font-weight:500;color:#999;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:color .15s}
+.sn:hover{color:#444}
+.sn.on{border-bottom-color:currentColor}
+.content{max-width:860px;margin:0 auto;padding:28px 24px}
+.hdr{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px}
+.bdg{width:44px;height:44px;border-radius:10px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;flex-shrink:0}
+.hdr h2{font-size:20px;font-weight:600;margin-bottom:4px}
+.hdr p{font-size:13px;color:#666;line-height:1.5}
+.card{background:#fff;border:1px solid #e5e3db;border-radius:12px;padding:20px;margin-bottom:16px}
+.slbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.9px;margin-bottom:12px}
+.sr{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.sr label{font-size:12px;color:#666;width:172px;flex-shrink:0}
+.sr input[type=range]{flex:1;height:4px;-webkit-appearance:none;border-radius:2px;outline:none;cursor:pointer;background:#ddd}
+.sv{font-family:monospace;font-size:12px;color:#888;min-width:70px;text-align:right}
+.mets{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px;margin:12px 0}
+.met{background:#f8f7f4;border-radius:8px;padding:10px 12px}
+.met .ml{font-size:11px;color:#888;margin-bottom:3px}
+.met .mv{font-size:19px;font-weight:600}
+.pos{color:#2d6b0e}.neg{color:#b02020}
+.ins{border-left:3px solid;padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;color:#555;line-height:1.6;margin-top:12px;background:#fafaf8}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.bx{border-radius:10px;padding:14px}
+.bx h4{font-size:12px;font-weight:600;margin-bottom:5px}
+.bx p{font-size:12px;line-height:1.5}
+.fml{background:#f0efe9;border-radius:8px;padding:11px 16px;font-family:monospace;font-size:13px;margin:10px 0;text-align:center}
+.wf-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.wf-lbl{font-size:12px;width:175px;flex-shrink:0;color:#555}
+.wf-lbl.bold{font-weight:600;color:#222}
+.wf-wrap{flex:1;height:22px;background:#f0efe9;border-radius:4px;overflow:hidden}
+.wf-bar{height:100%;display:flex;align-items:center;padding:0 7px;font-size:10px;font-weight:600;color:#fff}
+.wf-amt{font-family:monospace;font-size:11px;width:65px;text-align:right}
+.arch-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:4px}
+.arch-card{border-radius:10px;padding:12px;cursor:pointer;border:2px solid transparent;transition:border-color .15s}
+.arch-card:hover{border-color:rgba(0,0,0,.2)}
+.arch-card.sel{border-color:#0D6B50}
+.arch-card h4{font-size:12px;font-weight:600;margin-bottom:3px}
+.arch-card p{font-size:11px;line-height:1.4}
+.moat-row{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.moat-lbl{font-size:12px;color:#666;width:140px;flex-shrink:0}
+.moat-wrap{flex:1;height:24px;background:#f0efe9;border-radius:4px;overflow:hidden}
+.moat-bar{height:100%;display:flex;align-items:center;padding:0 8px;font-size:11px;font-weight:600;color:#fff;transition:width .25s}
+.alloc-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.alloc-lbl{font-size:12px;color:#666;width:150px;flex-shrink:0}
+.alloc-wrap{flex:1;height:24px;background:#f0efe9;border-radius:4px;overflow:hidden}
+.alloc-bar{height:100%;display:flex;align-items:center;padding:0 8px;font-size:11px;font-weight:600;color:#fff;transition:width .25s}
+.alloc-pct{font-family:monospace;font-size:11px;color:#888;width:36px;text-align:right}
+.leg{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#666;margin-bottom:8px}
+.leg span{display:flex;align-items:center;gap:4px}
+.leg-dot{width:10px;height:10px;border-radius:2px;display:inline-block;flex-shrink:0}
+.ch-wrap{position:relative;height:200px;margin:10px 0}
+.tl-wrap{position:relative;height:72px;margin:12px 0}
+.bs-wrap{display:flex;gap:2px;margin:12px 0}
+.bs-col{flex:1}
+.bs-head{font-size:11px;font-weight:600;color:#666;background:#f0efe9;padding:6px 10px;border-radius:6px 6px 0 0}
+.bs-item{display:flex;justify-content:space-between;font-size:12px;padding:5px 10px;border-bottom:1px solid #f0efe9}
+.bs-item span:first-child{color:#666}
+.bs-sub{display:flex;justify-content:space-between;font-size:12px;font-weight:600;padding:5px 10px;background:#f8f7f4}
+.bs-tot{display:flex;justify-content:space-between;font-size:12px;font-weight:600;padding:6px 10px;background:#f0efe9;border-radius:0 0 6px 6px}
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <button class="mn ma on" onclick="showMod('a',this)">Module A — Language of money</button>
+  <button class="mn mb" onclick="showMod('b',this)">Module B — Value creation</button>
+  <button class="mn mc" onclick="showMod('c',this)">Module C — Time value</button>
+  <button class="mn md" onclick="showMod('d',this)">Module D — Business model intuition</button>
+</div>
+
+<!-- ═══ MODULE A ═══ -->
+<div id="mod-a" class="mod on">
+<div class="sub-nav">
+  <button class="sn on" style="color:#C94F28" onclick="showPane('a','a1',this,'#C94F28')">A1 Revenue vs profit vs cash</button>
+  <button class="sn" onclick="showPane('a','a2',this,'#C94F28')">A2 Income statement</button>
+  <button class="sn" onclick="showPane('a','a3',this,'#C94F28')">A3 Margins</button>
+  <button class="sn" onclick="showPane('a','a4',this,'#C94F28')">A4 Working capital</button>
+  <button class="sn" onclick="showPane('a','a5',this,'#C94F28')">A5 Balance sheet</button>
+</div>
+<div class="content">
+
+<div id="a-a1" class="pane on">
+  <div class="hdr"><div class="bdg" style="background:#C94F28">A1</div><div><h2>Revenue vs. profit vs. cash</h2><p>Three numbers that are never the same — confusing them is how smart people make bad decisions.</p></div></div>
+  <div class="card">
+    <div class="slbl" style="color:#C94F28">Catering business scenario</div>
+    <div class="sr"><label>Invoice amount (Rp M)</label><input type="range" id="a1r" min="10" max="200" step="5" value="50"><span class="sv" id="a1r-v">50M</span></div>
+    <div class="sr"><label>Costs incurred (Rp M)</label><input type="range" id="a1c" min="5" max="150" step="5" value="30"><span class="sv" id="a1c-v">30M</span></div>
+    <div class="sr"><label>% invoice collected now</label><input type="range" id="a1p" min="0" max="100" step="5" value="0"><span class="sv" id="a1p-v">0%</span></div>
+    <div class="sr"><label>% costs paid now</label><input type="range" id="a1cp" min="0" max="100" step="5" value="100"><span class="sv" id="a1cp-v">100%</span></div>
+    <div class="mets">
+      <div class="met"><div class="ml">Revenue</div><div class="mv" style="color:#C94F28" id="a1-rv">50M</div></div>
+      <div class="met"><div class="ml">Profit</div><div class="mv" id="a1-pr">+20M</div></div>
+      <div class="met"><div class="ml">Net cash movement</div><div class="mv" id="a1-cs">−30M</div></div>
+    </div>
+    <div class="ins" style="border-color:#C94F28" id="a1-ins">Adjust the sliders — watch all three numbers diverge on the exact same transaction.</div>
+  </div>
+  <div class="three">
+    <div class="bx" style="background:#FAECE7"><h4 style="color:#7A2F12">Timing gaps</h4><p style="color:#993C1D">Deliver now, collect later. Revenue recognized before cash arrives.</p></div>
+    <div class="bx" style="background:#FAECE7"><h4 style="color:#7A2F12">Non-cash costs</h4><p style="color:#993C1D">Depreciation hits profit but the cash left when you bought the asset.</p></div>
+    <div class="bx" style="background:#FAECE7"><h4 style="color:#7A2F12">Financing</h4><p style="color:#993C1D">A loan raises cash but doesn't touch profit. Repaying destroys cash, not profit.</p></div>
+  </div>
+</div>
+
+<div id="a-a2" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#C94F28">A2</div><div><h2>The income statement</h2><p>The waterfall from revenue to net profit — every line tells where value is created or destroyed.</p></div></div>
+  <div class="card">
+    <div class="slbl" style="color:#C94F28">Interactive P&L waterfall</div>
+    <div class="sr"><label>Revenue (Rp M)</label><input type="range" id="a2r" min="100" max="1000" step="25" value="500"><span class="sv" id="a2r-v">500M</span></div>
+    <div class="sr"><label>COGS % of revenue</label><input type="range" id="a2cg" min="10" max="80" step="1" value="40"><span class="sv" id="a2cg-v">40%</span></div>
+    <div class="sr"><label>Operating expenses (Rp M)</label><input type="range" id="a2op" min="10" max="300" step="10" value="120"><span class="sv" id="a2op-v">120M</span></div>
+    <div class="sr"><label>Depreciation (Rp M)</label><input type="range" id="a2dp" min="0" max="100" step="5" value="20"><span class="sv" id="a2dp-v">20M</span></div>
+    <div class="sr"><label>Tax rate %</label><input type="range" id="a2tx" min="0" max="40" step="1" value="22"><span class="sv" id="a2tx-v">22%</span></div>
+    <div id="a2-wf" style="margin-top:14px"></div>
+    <div class="mets" id="a2-met"></div>
+  </div>
+</div>
+
+<div id="a-a3" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#C94F28">A3</div><div><h2>Margin types</h2><p>Gross margin, contribution margin, EBITDA, net profit — each answers a different question about the business.</p></div></div>
+  <div class="card">
+    <div class="slbl" style="color:#C94F28">Margin stack — layer by layer</div>
+    <div class="sr"><label>Revenue/unit (Rp K)</label><input type="range" id="a3r" min="50" max="500" step="10" value="200"><span class="sv" id="a3r-v">200K</span></div>
+    <div class="sr"><label>COGS/unit (Rp K)</label><input type="range" id="a3cg" min="10" max="300" step="10" value="80"><span class="sv" id="a3cg-v">80K</span></div>
+    <div class="sr"><label>Variable opex/unit (Rp K)</label><input type="range" id="a3vo" min="0" max="100" step="5" value="30"><span class="sv" id="a3vo-v">30K</span></div>
+    <div class="sr"><label>Allocated fixed/unit (Rp K)</label><input type="range" id="a3fx" min="0" max="100" step="5" value="25"><span class="sv" id="a3fx-v">25K</span></div>
+    <div id="a3-bar" style="height:36px;display:flex;border-radius:8px;overflow:hidden;margin:14px 0"></div>
+    <div id="a3-leg" class="leg"></div>
+    <div class="mets" id="a3-met"></div>
+    <div class="ins" style="border-color:#C94F28" id="a3-ins"></div>
+  </div>
+</div>
+
+<div id="a-a4" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#C94F28">A4</div><div><h2>Working capital</h2><p>Why a growing business can run out of cash even when profitable — the timing gap that kills companies.</p></div></div>
+  <div class="card">
+    <div class="slbl" style="color:#C94F28">Cash conversion cycle</div>
+    <div class="sr"><label>Days to pay suppliers (DPO)</label><input type="range" id="a4po" min="0" max="90" step="5" value="30"><span class="sv" id="a4po-v">30 days</span></div>
+    <div class="sr"><label>Days inventory sits (DIO)</label><input type="range" id="a4io" min="0" max="90" step="5" value="15"><span class="sv" id="a4io-v">15 days</span></div>
+    <div class="sr"><label>Days clients pay (DSO)</label><input type="range" id="a4so" min="0" max="120" step="5" value="60"><span class="sv" id="a4so-v">60 days</span></div>
+    <div class="tl-wrap" id="a4-tl"></div>
+    <div class="mets">
+      <div class="met"><div class="ml">Cash conversion cycle</div><div class="mv" id="a4-ccc">45 days</div></div>
+      <div class="met"><div class="ml">Cash trap rating</div><div class="mv" id="a4-rat">High</div></div>
+    </div>
+    <div class="ins" style="border-color:#C94F28" id="a4-ins"></div>
+  </div>
+  <div class="card">
+    <div class="slbl" style="color:#C94F28">Working capital calculator</div>
+    <div class="sr"><label>Accounts receivable (Rp M)</label><input type="range" id="a4ar" min="0" max="500" step="10" value="200"><span class="sv" id="a4ar-v">200M</span></div>
+    <div class="sr"><label>Inventory (Rp M)</label><input type="range" id="a4iv" min="0" max="300" step="10" value="100"><span class="sv" id="a4iv-v">100M</span></div>
+    <div class="sr"><label>Accounts payable (Rp M)</label><input type="range" id="a4ap" min="0" max="300" step="10" value="80"><span class="sv" id="a4ap-v">80M</span></div>
+    <div class="fml">Working Capital = AR + Inventory − AP = <span style="color:#C94F28;font-weight:700" id="a4-wc">220M</span></div>
+  </div>
+</div>
+
+<div id="a-a5" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#C94F28">A5</div><div><h2>The balance sheet</h2><p>What the business owns, owes, and what's left — a snapshot at one moment in time.</p></div></div>
+  <div class="card">
+    <div class="slbl" style="color:#C94F28">Build a balance sheet</div>
+    <div class="two">
+      <div>
+        <div style="font-size:11px;font-weight:600;color:#888;margin-bottom:8px;text-transform:uppercase;letter-spacing:.7px">Assets</div>
+        <div class="sr" style="margin-bottom:6px"><label style="font-size:11px;width:115px">Cash (Rp M)</label><input type="range" id="a5ca" min="0" max="500" step="10" value="200"><span class="sv" id="a5ca-v" style="font-size:11px">200M</span></div>
+        <div class="sr" style="margin-bottom:6px"><label style="font-size:11px;width:115px">Receivables</label><input type="range" id="a5ar" min="0" max="500" step="10" value="300"><span class="sv" id="a5ar-v" style="font-size:11px">300M</span></div>
+        <div class="sr" style="margin-bottom:6px"><label style="font-size:11px;width:115px">Inventory</label><input type="range" id="a5iv" min="0" max="300" step="10" value="100"><span class="sv" id="a5iv-v" style="font-size:11px">100M</span></div>
+        <div class="sr"><label style="font-size:11px;width:115px">Property & equip</label><input type="range" id="a5pe" min="0" max="2000" step="50" value="1000"><span class="sv" id="a5pe-v" style="font-size:11px">1,000M</span></div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;color:#888;margin-bottom:8px;text-transform:uppercase;letter-spacing:.7px">Liabilities & equity</div>
+        <div class="sr" style="margin-bottom:6px"><label style="font-size:11px;width:115px">Payables</label><input type="range" id="a5ap" min="0" max="300" step="10" value="150"><span class="sv" id="a5ap-v" style="font-size:11px">150M</span></div>
+        <div class="sr" style="margin-bottom:6px"><label style="font-size:11px;width:115px">Short-term debt</label><input type="range" id="a5sd" min="0" max="500" step="10" value="200"><span class="sv" id="a5sd-v" style="font-size:11px">200M</span></div>
+        <div class="sr"><label style="font-size:11px;width:115px">Long-term debt</label><input type="range" id="a5ld" min="0" max="1000" step="50" value="500"><span class="sv" id="a5ld-v" style="font-size:11px">500M</span></div>
+      </div>
+    </div>
+    <div class="bs-wrap" id="a5-bs"></div>
+    <div class="mets" id="a5-met"></div>
+    <div class="ins" style="border-color:#C94F28" id="a5-ins"></div>
+  </div>
+</div>
+</div></div>
+
+<!-- ═══ MODULE B ═══ -->
+<div id="mod-b" class="mod">
+<div class="sub-nav">
+  <button class="sn on" style="color:#1357A6" onclick="showPane('b','b1',this,'#1357A6')">B1 Fixed vs variable</button>
+  <button class="sn" onclick="showPane('b','b2',this,'#1357A6')">B2 Unit economics</button>
+  <button class="sn" onclick="showPane('b','b3',this,'#1357A6')">B3 CAC & LTV</button>
+  <button class="sn" onclick="showPane('b','b4',this,'#1357A6')">B4 Break-even</button>
+  <button class="sn" onclick="showPane('b','b5',this,'#1357A6')">B5 ROI & capital</button>
+</div>
+<div class="content">
+
+<div id="b-b1" class="pane on">
+  <div class="hdr"><div class="bdg" style="background:#1357A6">B1</div><div><h2>Fixed vs. variable costs</h2><p>The distinction that changes everything about how a business behaves at different volumes.</p></div></div>
+  <div class="two">
+    <div class="bx" style="background:#E6F1FB;border:1px solid #B5D4F4"><h4 style="color:#0B3E7A">Fixed costs — don't move</h4><p style="color:#1357A6">Rent, salaries, depreciation. Pay these whether you sell 1 unit or 1 million.</p></div>
+    <div class="bx" style="background:#FAECE7;border:1px solid #F5C4B3"><h4 style="color:#7A2F12">Variable costs — move with volume</h4><p style="color:#993C1D">Materials, commissions, delivery. Only when you produce or sell.</p></div>
+  </div>
+  <div class="card">
+    <div class="slbl" style="color:#1357A6">Operating leverage simulator</div>
+    <div class="sr"><label>Fixed costs (Rp M/mo)</label><input type="range" id="b1f" min="50" max="500" step="10" value="170"><span class="sv" id="b1f-v">170M</span></div>
+    <div class="sr"><label>Price/unit (Rp K)</label><input type="range" id="b1p" min="20" max="200" step="5" value="50"><span class="sv" id="b1p-v">50K</span></div>
+    <div class="sr"><label>Variable cost/unit (Rp K)</label><input type="range" id="b1vc" min="5" max="150" step="5" value="25"><span class="sv" id="b1vc-v">25K</span></div>
+    <div class="sr"><label>Current volume (units)</label><input type="range" id="b1vl" min="0" max="20000" step="500" value="8000"><span class="sv" id="b1vl-v">8,000</span></div>
+    <div class="leg"><span><span class="leg-dot" style="background:#1357A6"></span>Revenue</span><span><span class="leg-dot" style="background:#C94F28"></span>Total cost</span></div>
+    <div class="ch-wrap"><canvas id="b1c"></canvas></div>
+    <div class="mets">
+      <div class="met"><div class="ml">Contribution/unit</div><div class="mv" style="color:#1357A6" id="b1-cm">25K</div></div>
+      <div class="met"><div class="ml">Break-even volume</div><div class="mv" style="color:#1357A6" id="b1-be">6,800</div></div>
+      <div class="met"><div class="ml">Current profit</div><div class="mv" id="b1-pr">+30M</div></div>
+      <div class="met"><div class="ml">Operating margin</div><div class="mv" id="b1-mg">7.5%</div></div>
+    </div>
+    <div class="ins" style="border-color:#1357A6" id="b1-ins"></div>
+  </div>
+</div>
+
+<div id="b-b2" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#1357A6">B2</div><div><h2>Unit economics</h2><p>What one customer actually earns. If the unit doesn't work, nothing works at scale.</p></div></div>
+  <div class="card">
+    <div class="slbl" style="color:#1357A6">Unit economics stack</div>
+    <div class="sr"><label>Revenue/customer (Rp K)</label><input type="range" id="b2r" min="50" max="500" step="10" value="200"><span class="sv" id="b2r-v">200K</span></div>
+    <div class="sr"><label>COGS/customer (Rp K)</label><input type="range" id="b2cg" min="10" max="300" step="10" value="80"><span class="sv" id="b2cg-v">80K</span></div>
+    <div class="sr"><label>Variable service cost (Rp K)</label><input type="range" id="b2vc" min="0" max="100" step="5" value="30"><span class="sv" id="b2vc-v">30K</span></div>
+    <div class="sr"><label>Allocated fixed/customer (Rp K)</label><input type="range" id="b2fc" min="0" max="100" step="5" value="20"><span class="sv" id="b2fc-v">20K</span></div>
+    <div id="b2-bar" style="height:38px;display:flex;border-radius:8px;overflow:hidden;margin:14px 0"></div>
+    <div id="b2-leg" class="leg"></div>
+    <div class="mets">
+      <div class="met"><div class="ml">Gross margin</div><div class="mv" style="color:#1357A6" id="b2-gm">60%</div></div>
+      <div class="met"><div class="ml">Contribution margin</div><div class="mv" id="b2-cm">45%</div></div>
+      <div class="met"><div class="ml">Unit profit</div><div class="mv" id="b2-up">+70K</div></div>
+      <div class="met"><div class="ml">Net margin</div><div class="mv" id="b2-nm">35%</div></div>
+    </div>
+    <div class="ins" style="border-color:#1357A6" id="b2-ins"></div>
+  </div>
+</div>
+
+<div id="b-b3" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#1357A6">B3</div><div><h2>CAC & LTV</h2><p>The two numbers that reveal whether a business model is fundamentally sound or broken.</p></div></div>
+  <div class="card">
+    <div class="slbl" style="color:#1357A6">Payback calculator</div>
+    <div class="sr"><label>CAC (Rp K)</label><input type="range" id="b3ca" min="100" max="2000" step="50" value="500"><span class="sv" id="b3ca-v">500K</span></div>
+    <div class="sr"><label>Monthly revenue/customer (Rp K)</label><input type="range" id="b3rv" min="50" max="500" step="10" value="200"><span class="sv" id="b3rv-v">200K</span></div>
+    <div class="sr"><label>Monthly serving cost (Rp K)</label><input type="range" id="b3cs" min="10" max="300" step="10" value="80"><span class="sv" id="b3cs-v">80K</span></div>
+    <div class="sr"><label>Customer lifetime (months)</label><input type="range" id="b3lf" min="1" max="60" step="1" value="18"><span class="sv" id="b3lf-v">18 mo</span></div>
+    <div class="leg"><span><span class="leg-dot" style="background:#1357A6"></span>Cumulative profit</span></div>
+    <div class="ch-wrap"><canvas id="b3c"></canvas></div>
+    <div class="mets">
+      <div class="met"><div class="ml">LTV</div><div class="mv" style="color:#1357A6" id="b3-lt">2,160K</div></div>
+      <div class="met"><div class="ml">LTV:CAC ratio</div><div class="mv" id="b3-ra">4.3×</div></div>
+      <div class="met"><div class="ml">Payback period</div><div class="mv" id="b3-pb">4.2 mo</div></div>
+      <div class="met"><div class="ml">Verdict</div><div class="mv" id="b3-vd">Healthy</div></div>
+    </div>
+    <div class="ins" style="border-color:#1357A6" id="b3-ins"></div>
+  </div>
+</div>
+
+<div id="b-b4" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#1357A6">B4</div><div><h2>Break-even analysis</h2><p>The exact point when a business stops losing money — and what every decision does to that point.</p></div></div>
+  <div class="fml">Break-even = <span style="color:#1357A6;font-weight:700">Fixed costs</span> ÷ Contribution margin per unit</div>
+  <div class="card">
+    <div class="slbl" style="color:#1357A6">Break-even visualizer</div>
+    <div class="sr"><label>Fixed costs (Rp M/mo)</label><input type="range" id="b4f" min="50" max="800" step="25" value="300"><span class="sv" id="b4f-v">300M</span></div>
+    <div class="sr"><label>Price/unit (Rp M)</label><input type="range" id="b4p" min="1" max="50" step="1" value="25"><span class="sv" id="b4p-v">25M</span></div>
+    <div class="sr"><label>Variable cost/unit (Rp M)</label><input type="range" id="b4vc" min="1" max="40" step="1" value="10"><span class="sv" id="b4vc-v">10M</span></div>
+    <div class="sr"><label>Current volume (units)</label><input type="range" id="b4vl" min="1" max="80" step="1" value="30"><span class="sv" id="b4vl-v">30</span></div>
+    <div class="leg"><span><span class="leg-dot" style="background:#1357A6"></span>Revenue</span><span><span class="leg-dot" style="background:#C94F28"></span>Total cost</span></div>
+    <div class="ch-wrap" style="height:220px"><canvas id="b4c"></canvas></div>
+    <div class="mets">
+      <div class="met"><div class="ml">Break-even point</div><div class="mv" style="color:#1357A6" id="b4-be">20 units</div></div>
+      <div class="met"><div class="ml">Current profit</div><div class="mv" id="b4-pr">+150M</div></div>
+      <div class="met"><div class="ml">Safety margin</div><div class="mv" id="b4-sm">+10 units</div></div>
+      <div class="met"><div class="ml">Status</div><div class="mv" id="b4-st">Above B/E</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="b-b5" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#1357A6">B5</div><div><h2>ROI & capital efficiency</h2><p>How hard is each rupiah working? Capital is scarce — maximize return per rupiah deployed.</p></div></div>
+  <div class="card">
+    <div class="slbl" style="color:#1357A6">Investment return calculator</div>
+    <div class="sr"><label>Investment amount (Rp M)</label><input type="range" id="b5iv" min="100" max="2000" step="50" value="500"><span class="sv" id="b5iv-v">500M</span></div>
+    <div class="sr"><label>Annual net profit (Rp M)</label><input type="range" id="b5pr" min="10" max="1000" step="10" value="150"><span class="sv" id="b5pr-v">150M</span></div>
+    <div class="sr"><label>Horizon (years)</label><input type="range" id="b5yr" min="1" max="10" step="1" value="3"><span class="sv" id="b5yr-v">3 yrs</span></div>
+    <div class="leg"><span><span class="leg-dot" style="background:#1357A6"></span>This investment</span><span><span class="leg-dot" style="background:#999;border:1px dashed #666"></span>Bank 8%</span></div>
+    <div class="ch-wrap"><canvas id="b5c"></canvas></div>
+    <div class="mets">
+      <div class="met"><div class="ml">Annual ROI</div><div class="mv" id="b5-ro">30%</div></div>
+      <div class="met"><div class="ml">vs bank baseline (8%)</div><div class="mv" id="b5-ex">+22%</div></div>
+      <div class="met"><div class="ml">Payback period</div><div class="mv" id="b5-pb">3.3 yrs</div></div>
+      <div class="met"><div class="ml">Verdict</div><div class="mv" id="b5-vd">Deploy</div></div>
+    </div>
+    <div class="ins" style="border-color:#1357A6" id="b5-ins"></div>
+  </div>
+</div>
+</div></div>
+
+<!-- ═══ MODULE C ═══ -->
+<div id="mod-c" class="mod">
+<div class="sub-nav">
+  <button class="sn on" style="color:#4A41A8" onclick="showPane('c','c1',this,'#4A41A8')">C1 Time value of money</button>
+  <button class="sn" onclick="showPane('c','c2',this,'#4A41A8')">C2 NPV & DCF</button>
+  <button class="sn" onclick="showPane('c','c3',this,'#4A41A8')">C3 IRR & MOIC</button>
+  <button class="sn" onclick="showPane('c','c4',this,'#4A41A8')">C4 Scenarios</button>
+</div>
+<div class="content">
+
+<div id="c-c1" class="pane on">
+  <div class="hdr"><div class="bdg" style="background:#4A41A8">C1</div><div><h2>Time value of money</h2><p>A rupiah today is worth more than a rupiah tomorrow — the foundation of every valuation and investment decision.</p></div></div>
+  <div class="fml">Future Value = <span style="color:#4A41A8;font-weight:700">PV</span> × (1 + r)ⁿ &nbsp;|&nbsp; Present Value = <span style="color:#4A41A8;font-weight:700">FV</span> ÷ (1 + r)ⁿ</div>
+  <div class="card">
+    <div class="slbl" style="color:#4A41A8">Compound growth calculator</div>
+    <div class="sr"><label>Principal (Rp M)</label><input type="range" id="c1pv" min="100" max="5000" step="100" value="1000"><span class="sv" id="c1pv-v">1,000M</span></div>
+    <div class="sr"><label>Annual rate (%)</label><input type="range" id="c1r" min="1" max="30" step="1" value="10"><span class="sv" id="c1r-v">10%</span></div>
+    <div class="sr"><label>Years</label><input type="range" id="c1n" min="1" max="30" step="1" value="10"><span class="sv" id="c1n-v">10 yrs</span></div>
+    <div class="leg"><span><span class="leg-dot" style="background:#4A41A8"></span>Compound growth</span><span><span class="leg-dot" style="background:#999"></span>Simple interest</span></div>
+    <div class="ch-wrap"><canvas id="c1c"></canvas></div>
+    <div class="mets">
+      <div class="met"><div class="ml">Future value</div><div class="mv" style="color:#4A41A8" id="c1-fv">2,594M</div></div>
+      <div class="met"><div class="ml">Total gain</div><div class="mv pos" id="c1-gn">+1,594M</div></div>
+      <div class="met"><div class="ml">Compound effect</div><div class="mv" style="color:#4A41A8" id="c1-ce">+594M</div></div>
+      <div class="met"><div class="ml">Rule of 72 — doubles in</div><div class="mv" style="color:#4A41A8" id="c1-r7">7.2 yrs</div></div>
+    </div>
+    <div class="ins" style="border-color:#4A41A8" id="c1-ins"></div>
+  </div>
+  <div class="card">
+    <div class="slbl" style="color:#4A41A8">Discounting — running it backwards</div>
+    <div class="sr"><label>Future cash flow (Rp M)</label><input type="range" id="c1fv2" min="100" max="5000" step="100" value="1000"><span class="sv" id="c1fv2-v">1,000M</span></div>
+    <div class="sr"><label>Discount rate (%)</label><input type="range" id="c1r2" min="1" max="30" step="1" value="10"><span class="sv" id="c1r2-v">10%</span></div>
+    <div class="sr"><label>Years from now</label><input type="range" id="c1n2" min="1" max="20" step="1" value="5"><span class="sv" id="c1n2-v">5 yrs</span></div>
+    <div class="mets">
+      <div class="met"><div class="ml">Present value today</div><div class="mv" style="color:#4A41A8" id="c1b-pv">621M</div></div>
+      <div class="met"><div class="ml">Discount amount</div><div class="mv neg" id="c1b-dc">−379M</div></div>
+      <div class="met"><div class="ml">Discount factor</div><div class="mv" style="color:#4A41A8" id="c1b-df">0.621</div></div>
+    </div>
+    <div class="ins" style="border-color:#4A41A8" id="c1b-ins"></div>
+  </div>
+</div>
+
+<div id="c-c2" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#4A41A8">C2</div><div><h2>NPV & DCF</h2><p>How to value a stream of future cash flows — the tool behind every asset valuation and investment case.</p></div></div>
+  <div class="fml">NPV = Σ <span style="color:#4A41A8;font-weight:700">CFₜ</span> ÷ (1+r)ᵗ − Initial investment</div>
+  <div class="card">
+    <div class="slbl" style="color:#4A41A8">5-year DCF model</div>
+    <div class="sr"><label>Initial investment (Rp M)</label><input type="range" id="c2iv" min="100" max="3000" step="100" value="1000"><span class="sv" id="c2iv-v">1,000M</span></div>
+    <div class="sr"><label>Year 1 cash flow (Rp M)</label><input type="range" id="c2cf" min="50" max="1000" step="25" value="200"><span class="sv" id="c2cf-v">200M</span></div>
+    <div class="sr"><label>Annual CF growth rate (%)</label><input type="range" id="c2g" min="-10" max="40" step="1" value="15"><span class="sv" id="c2g-v">15%</span></div>
+    <div class="sr"><label>Discount rate / WACC (%)</label><input type="range" id="c2r" min="5" max="30" step="1" value="12"><span class="sv" id="c2r-v">12%</span></div>
+    <div class="sr"><label>Terminal growth rate (%)</label><input type="range" id="c2tg" min="0" max="10" step="1" value="3"><span class="sv" id="c2tg-v">3%</span></div>
+    <div class="leg"><span><span class="leg-dot" style="background:#7F77DD"></span>Cash flow</span><span><span class="leg-dot" style="background:#5DCAA5"></span>Discounted CF</span></div>
+    <div class="ch-wrap"><canvas id="c2c"></canvas></div>
+    <div class="mets">
+      <div class="met"><div class="ml">Sum of DCFs</div><div class="mv" style="color:#4A41A8" id="c2-sd">845M</div></div>
+      <div class="met"><div class="ml">Terminal value (PV)</div><div class="mv" style="color:#4A41A8" id="c2-tv">920M</div></div>
+      <div class="met"><div class="ml">NPV</div><div class="mv" id="c2-nv">+765M</div></div>
+      <div class="met"><div class="ml">Decision</div><div class="mv" id="c2-dc">Invest</div></div>
+    </div>
+    <div class="ins" style="border-color:#4A41A8" id="c2-ins"></div>
+  </div>
+</div>
+
+<div id="c-c3" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#4A41A8">C3</div><div><h2>IRR & MOIC</h2><p>How investors measure returns — IRR is the annualised rate, MOIC is the total multiple. Both matter together.</p></div></div>
+  <div class="card">
+    <div class="slbl" style="color:#4A41A8">PE deal return calculator</div>
+    <div class="sr"><label>Entry price (Rp M)</label><input type="range" id="c3en" min="500" max="10000" step="250" value="3000"><span class="sv" id="c3en-v">3,000M</span></div>
+    <div class="sr"><label>Exit price (Rp M)</label><input type="range" id="c3ex" min="500" max="20000" step="250" value="7500"><span class="sv" id="c3ex-v">7,500M</span></div>
+    <div class="sr"><label>Hold period (years)</label><input type="range" id="c3yr" min="1" max="10" step="1" value="4"><span class="sv" id="c3yr-v">4 yrs</span></div>
+    <div class="sr"><label>Annual distributions (Rp M)</label><input type="range" id="c3dv" min="0" max="500" step="25" value="0"><span class="sv" id="c3dv-v">0M</span></div>
+    <div class="leg"><span><span class="leg-dot" style="background:#4A41A8"></span>Cumulative return</span><span><span class="leg-dot" style="background:#999"></span>2× MOIC target</span></div>
+    <div class="ch-wrap"><canvas id="c3c"></canvas></div>
+    <div class="mets">
+      <div class="met"><div class="ml">MOIC</div><div class="mv" id="c3-mo">2.5×</div></div>
+      <div class="met"><div class="ml">IRR (approx)</div><div class="mv" id="c3-ir">25.7%</div></div>
+      <div class="met"><div class="ml">Total profit</div><div class="mv" id="c3-pr">+4,500M</div></div>
+      <div class="met"><div class="ml">Verdict</div><div class="mv" id="c3-vd">Strong</div></div>
+    </div>
+    <div class="ins" style="border-color:#4A41A8" id="c3-ins"></div>
+  </div>
+</div>
+
+<div id="c-c4" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#4A41A8">C4</div><div><h2>Scenarios & probability weighting</h2><p>Replace single estimates with probability-weighted outcomes — the right way to handle uncertainty.</p></div></div>
+  <div class="fml">Expected value = Σ (<span style="color:#4A41A8;font-weight:700">Probability</span> × Outcome)</div>
+  <div class="card">
+    <div class="slbl" style="color:#4A41A8">Three-scenario model</div>
+    <div class="three">
+      <div class="bx" style="background:#EAF3DE">
+        <div style="font-size:11px;font-weight:700;color:#1A4A06;margin-bottom:8px;text-transform:uppercase;letter-spacing:.7px">Bull case</div>
+        <div class="sr" style="margin-bottom:6px"><label style="font-size:11px;width:auto">Probability %</label><input type="range" id="c4bp" min="5" max="60" step="5" value="25"><span class="sv" id="c4bp-v" style="font-size:11px">25%</span></div>
+        <div class="sr" style="margin-bottom:0"><label style="font-size:11px;width:auto">NPV (Rp M)</label><input type="range" id="c4bv" min="0" max="5000" step="100" value="3000"><span class="sv" id="c4bv-v" style="font-size:11px">3,000M</span></div>
+      </div>
+      <div class="bx" style="background:#E6F1FB">
+        <div style="font-size:11px;font-weight:700;color:#0B3E7A;margin-bottom:8px;text-transform:uppercase;letter-spacing:.7px">Base case</div>
+        <div class="sr" style="margin-bottom:6px"><label style="font-size:11px;width:auto">Probability %</label><input type="range" id="c4mp" min="5" max="80" step="5" value="50"><span class="sv" id="c4mp-v" style="font-size:11px">50%</span></div>
+        <div class="sr" style="margin-bottom:0"><label style="font-size:11px;width:auto">NPV (Rp M)</label><input type="range" id="c4mv" min="-2000" max="3000" step="100" value="1000"><span class="sv" id="c4mv-v" style="font-size:11px">1,000M</span></div>
+      </div>
+      <div class="bx" style="background:#FCEBEB">
+        <div style="font-size:11px;font-weight:700;color:#6B1717;margin-bottom:8px;text-transform:uppercase;letter-spacing:.7px">Bear case</div>
+        <div class="sr" style="margin-bottom:6px"><label style="font-size:11px;width:auto">Probability %</label><input type="range" id="c4wp" min="5" max="60" step="5" value="25"><span class="sv" id="c4wp-v" style="font-size:11px">25%</span></div>
+        <div class="sr" style="margin-bottom:0"><label style="font-size:11px;width:auto">NPV (Rp M)</label><input type="range" id="c4wv" min="-3000" max="500" step="100" value="-800"><span class="sv" id="c4wv-v" style="font-size:11px">−800M</span></div>
+      </div>
+    </div>
+    <div id="c4-pw" style="font-size:12px;color:#b02020;margin:6px 0;display:none">Probabilities do not sum to 100% — adjust sliders.</div>
+    <div class="leg"><span><span class="leg-dot" style="background:#3B6D11"></span>Bull</span><span><span class="leg-dot" style="background:#1357A6"></span>Base</span><span><span class="leg-dot" style="background:#b02020"></span>Bear</span></div>
+    <div class="ch-wrap"><canvas id="c4c"></canvas></div>
+    <div class="mets">
+      <div class="met"><div class="ml">Expected NPV</div><div class="mv" id="c4-ev">+950M</div></div>
+      <div class="met"><div class="ml">Probability sum</div><div class="mv" id="c4-ps">100%</div></div>
+      <div class="met"><div class="ml">Bear case downside</div><div class="mv neg" id="c4-dn">−800M</div></div>
+      <div class="met"><div class="ml">Bull case upside</div><div class="mv pos" id="c4-up">+3,000M</div></div>
+    </div>
+    <div class="ins" style="border-color:#4A41A8" id="c4-ins"></div>
+  </div>
+</div>
+</div></div>
+
+<!-- ═══ MODULE D ═══ -->
+<div id="mod-d" class="mod">
+<div class="sub-nav">
+  <button class="sn on" style="color:#0D6B50" onclick="showPane('d','d1',this,'#0D6B50')">D1 Archetypes</button>
+  <button class="sn" onclick="showPane('d','d2',this,'#0D6B50')">D2 Operating leverage</button>
+  <button class="sn" onclick="showPane('d','d3',this,'#0D6B50')">D3 Network effects</button>
+  <button class="sn" onclick="showPane('d','d4',this,'#0D6B50')">D4 Competitive moats</button>
+  <button class="sn" onclick="showPane('d','d5',this,'#0D6B50')">D5 Capital allocation</button>
+</div>
+<div class="content">
+
+<div id="d-d1" class="pane on">
+  <div class="hdr"><div class="bdg" style="background:#0D6B50">D1</div><div><h2>Business model archetypes</h2><p>What makes a bank different from a retailer different from a SaaS company — each has fundamentally different economics.</p></div></div>
+  <div class="card">
+    <div class="slbl" style="color:#0D6B50">Select an archetype to explore</div>
+    <div class="arch-grid">
+      <div class="arch-card sel" style="background:#E1F5EE" onclick="selArch('saas',this)"><h4 style="color:#074532">SaaS / subscription</h4><p style="color:#0D6B50">Recurring revenue, high gross margin, CAC-heavy upfront, scales without proportional cost</p></div>
+      <div class="arch-card" style="background:#E6F1FB" onclick="selArch('retail',this)"><h4 style="color:#0B3E7A">Retail / distribution</h4><p style="color:#1357A6">High volume, thin margins, working-capital intensive, inventory risk</p></div>
+      <div class="arch-card" style="background:#FAEEDA" onclick="selArch('bank',this)"><h4 style="color:#503300">Bank / financial services</h4><p style="color:#7A5200">Spread-based revenue, leverage-dependent, regulatory capital constraints</p></div>
+      <div class="arch-card" style="background:#FAECE7" onclick="selArch('mfg',this)"><h4 style="color:#7A2F12">Manufacturing</h4><p style="color:#993C1D">High fixed assets, capex-heavy, operating leverage, supply chain risk</p></div>
+      <div class="arch-card" style="background:#EEEDFE" onclick="selArch('platform',this)"><h4 style="color:#2E266E">Platform / marketplace</h4><p style="color:#4A41A8">Two-sided market, network effects, near-zero marginal cost at scale</p></div>
+      <div class="arch-card" style="background:#F1EFE8" onclick="selArch('services',this)"><h4 style="color:#333">Professional services</h4><p style="color:#555">People-as-product, limited scalability, utilisation-dependent margins</p></div>
+    </div>
+    <div id="d1-det" style="margin-top:14px"></div>
+  </div>
+</div>
+
+<div id="d-d2" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#0D6B50">D2</div><div><h2>Operating leverage</h2><p>How fixed-cost businesses amplify both gains and losses at different revenue levels.</p></div></div>
+  <div class="card">
+    <div class="slbl" style="color:#0D6B50">Compare two cost structures</div>
+    <div class="sr"><label>Revenue (Rp M)</label><input type="range" id="d2rv" min="100" max="2000" step="50" value="500"><span class="sv" id="d2rv-v">500M</span></div>
+    <div class="two" style="margin-bottom:12px">
+      <div class="bx" style="background:#E1F5EE">
+        <div style="font-size:11px;font-weight:700;color:#074532;margin-bottom:8px">High fixed-cost business</div>
+        <div class="sr" style="margin-bottom:6px"><label style="font-size:11px;width:110px">Fixed costs (Rp M)</label><input type="range" id="d2hf" min="50" max="600" step="25" value="300"><span class="sv" id="d2hf-v" style="font-size:11px">300M</span></div>
+        <div class="sr" style="margin-bottom:0"><label style="font-size:11px;width:110px">Variable cost %</label><input type="range" id="d2hv" min="5" max="50" step="1" value="15"><span class="sv" id="d2hv-v" style="font-size:11px">15%</span></div>
+      </div>
+      <div class="bx" style="background:#FAEEDA">
+        <div style="font-size:11px;font-weight:700;color:#503300;margin-bottom:8px">Low fixed-cost business</div>
+        <div class="sr" style="margin-bottom:6px"><label style="font-size:11px;width:110px">Fixed costs (Rp M)</label><input type="range" id="d2lf" min="10" max="200" step="10" value="50"><span class="sv" id="d2lf-v" style="font-size:11px">50M</span></div>
+        <div class="sr" style="margin-bottom:0"><label style="font-size:11px;width:110px">Variable cost %</label><input type="range" id="d2lv" min="30" max="85" step="1" value="65"><span class="sv" id="d2lv-v" style="font-size:11px">65%</span></div>
+      </div>
+    </div>
+    <div class="leg"><span><span class="leg-dot" style="background:#1D9E75"></span>High fixed-cost profit</span><span><span class="leg-dot" style="background:#BA7517"></span>Low fixed-cost profit</span></div>
+    <div class="ch-wrap"><canvas id="d2c"></canvas></div>
+    <div class="mets">
+      <div class="met"><div class="ml">High-fixed profit</div><div class="mv" id="d2-hp">+75M</div></div>
+      <div class="met"><div class="ml">High-fixed margin</div><div class="mv" id="d2-hm">15%</div></div>
+      <div class="met"><div class="ml">Low-fixed profit</div><div class="mv" id="d2-lp">+125M</div></div>
+      <div class="met"><div class="ml">Low-fixed margin</div><div class="mv" id="d2-lm">25%</div></div>
+    </div>
+    <div class="ins" style="border-color:#0D6B50" id="d2-ins"></div>
+  </div>
+</div>
+
+<div id="d-d3" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#0D6B50">D3</div><div><h2>Platform & network effects</h2><p>Why some businesses compound and others don't — and why first movers in networked markets are nearly unbeatable.</p></div></div>
+  <div class="fml">Network value ≈ <span style="color:#0D6B50;font-weight:700">n²</span> &nbsp;(Metcalfe's Law — each new user adds value to all existing users)</div>
+  <div class="card">
+    <div class="slbl" style="color:#0D6B50">Network value simulator</div>
+    <div class="sr"><label>Number of users</label><input type="range" id="d3u" min="10" max="1000" step="10" value="100"><span class="sv" id="d3u-v">100</span></div>
+    <div class="sr"><label>Value per connection (Rp K)</label><input type="range" id="d3v" min="1" max="50" step="1" value="10"><span class="sv" id="d3v-v">10K</span></div>
+    <div class="leg"><span><span class="leg-dot" style="background:#1D9E75"></span>Network value (n²)</span><span><span class="leg-dot" style="background:#999"></span>Linear value (n)</span></div>
+    <div class="ch-wrap"><canvas id="d3c"></canvas></div>
+    <div class="mets">
+      <div class="met"><div class="ml">Network value</div><div class="mv" style="color:#0D6B50" id="d3-nv">99B</div></div>
+      <div class="met"><div class="ml">Possible connections</div><div class="mv" style="color:#0D6B50" id="d3-cn">4,950</div></div>
+      <div class="met"><div class="ml">Value vs linear</div><div class="mv" style="color:#0D6B50" id="d3-mx">99×</div></div>
+    </div>
+    <div class="ins" style="border-color:#0D6B50" id="d3-ins"></div>
+  </div>
+</div>
+
+<div id="d-d4" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#0D6B50">D4</div><div><h2>Competitive moats</h2><p>What makes a market position defensible — score a business across five dimensions of durability.</p></div></div>
+  <div class="card">
+    <div class="slbl" style="color:#0D6B50">Moat scorer</div>
+    <div class="sr"><label>Switching costs</label><input type="range" id="d4sw" min="0" max="10" step="1" value="7"><span class="sv" id="d4sw-v">7/10</span></div>
+    <div class="sr"><label>Network effects</label><input type="range" id="d4ne" min="0" max="10" step="1" value="5"><span class="sv" id="d4ne-v">5/10</span></div>
+    <div class="sr"><label>Cost advantages</label><input type="range" id="d4ca" min="0" max="10" step="1" value="4"><span class="sv" id="d4ca-v">4/10</span></div>
+    <div class="sr"><label>Intangibles (brand / IP)</label><input type="range" id="d4ia" min="0" max="10" step="1" value="6"><span class="sv" id="d4ia-v">6/10</span></div>
+    <div class="sr"><label>Efficient scale</label><input type="range" id="d4es" min="0" max="10" step="1" value="3"><span class="sv" id="d4es-v">3/10</span></div>
+    <div id="d4-bars" style="margin-top:14px"></div>
+    <div class="mets">
+      <div class="met"><div class="ml">Overall moat score</div><div class="mv" id="d4-sc">50/100</div></div>
+      <div class="met"><div class="ml">Moat width</div><div class="mv" id="d4-wd">Moderate</div></div>
+      <div class="met"><div class="ml">Strongest dimension</div><div class="mv" style="color:#0D6B50" id="d4-st">Switching costs</div></div>
+      <div class="met"><div class="ml">Weakest dimension</div><div class="mv" style="color:#854F0B" id="d4-wk">Efficient scale</div></div>
+    </div>
+    <div class="ins" style="border-color:#0D6B50" id="d4-ins"></div>
+  </div>
+</div>
+
+<div id="d-d5" class="pane">
+  <div class="hdr"><div class="bdg" style="background:#0D6B50">D5</div><div><h2>Capital allocation</h2><p>How management decides where to invest — the decision that separates great companies from mediocre ones.</p></div></div>
+  <div class="card">
+    <div class="slbl" style="color:#0D6B50">Allocate Rp 1,000M across competing uses</div>
+    <div style="font-size:13px;margin-bottom:12px;color:#555">Total allocated: <span id="d5-tot" style="font-weight:700;color:#0D6B50">1,000M</span></div>
+    <div class="sr"><label>Organic growth (R&D)</label><input type="range" id="d5a" min="0" max="1000" step="50" value="300"><span class="sv" id="d5a-v">300M</span></div>
+    <div class="sr"><label>M&A / acquisitions</label><input type="range" id="d5b" min="0" max="1000" step="50" value="200"><span class="sv" id="d5b-v">200M</span></div>
+    <div class="sr"><label>Capex / infrastructure</label><input type="range" id="d5c" min="0" max="1000" step="50" value="200"><span class="sv" id="d5c-v">200M</span></div>
+    <div class="sr"><label>Share buybacks</label><input type="range" id="d5d" min="0" max="1000" step="50" value="150"><span class="sv" id="d5d-v">150M</span></div>
+    <div class="sr"><label>Dividends</label><input type="range" id="d5e" min="0" max="1000" step="50" value="150"><span class="sv" id="d5e-v">150M</span></div>
+    <div id="d5-bars" style="margin:14px 0"></div>
+    <div class="ch-wrap" style="height:170px"><canvas id="d5ch"></canvas></div>
+    <div class="ins" style="border-color:#0D6B50" id="d5-ins"></div>
+  </div>
+</div>
+</div></div>
+
+<script>
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+var CH = {};
+function rf(n,d){ return d!==undefined ? parseFloat(n.toFixed(d)) : Math.round(n); }
+function sg(n){ return n >= 0 ? '+' : ''; }
+function cl(n){ return n >= 0 ? 'pos' : 'neg'; }
+function el(id){ return document.getElementById(id); }
+function st(id, v){ var e = el(id); if(e) e.textContent = v; }
+function sc(id, c){ var e = el(id); if(e) e.className = c; }
+function stcl(id, v, c){ st(id, v); sc(id, c); }
+function iv(id){ var e = el(id); return e ? +e.value : 0; }
+
+function mkChart(id, type, data, opts){
+  var cv = el(id);
+  if(!cv) return;
+  if(CH[id]) CH[id].destroy();
+  CH[id] = new Chart(cv, {type:type, data:data, options: Object.assign({
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}}
+  }, opts)});
+}
+
+// ─── Navigation ──────────────────────────────────────────────────────────────
+function showMod(m, btn){
+  document.querySelectorAll('.mod').forEach(function(x){ x.classList.remove('on'); });
+  document.querySelectorAll('.mn').forEach(function(x){ x.classList.remove('on'); });
+  el('mod-'+m).classList.add('on');
+  btn.classList.add('on');
+}
+function showPane(m, id, btn, color){
+  var mod = el('mod-'+m);
+  mod.querySelectorAll('.pane').forEach(function(x){ x.classList.remove('on'); });
+  mod.querySelectorAll('.sn').forEach(function(x){
+    x.classList.remove('on'); x.style.color='#999'; x.style.borderBottomColor='transparent';
+  });
+  el(m+'-'+id).classList.add('on');
+  btn.classList.add('on'); btn.style.color=color; btn.style.borderBottomColor=color;
+  // re-render active charts
+  var fns = {a1:uA1,a2:uA2,a3:uA3,a4:uA4,a5:uA5,b1:uB1,b2:uB2,b3:uB3,b4:uB4,b5:uB5,c1:uC1,c2:uC2,c3:uC3,c4:uC4,d1:null,d2:uD2,d3:uD3,d4:uD4,d5:uD5};
+  if(fns[id]) try{ fns[id](); }catch(e){}
+}
+
+// attach oninput after DOM ready to avoid issues
+function wire(id, fn){
+  var e = el(id); if(e) e.addEventListener('input', fn);
+}
+
+// ─── Module A ─────────────────────────────────────────────────────────────────
+function uA1(){
+  var r=iv('a1r'), c=iv('a1c'), p=iv('a1p')/100, cp=iv('a1cp')/100;
+  st('a1r-v', r+'M'); st('a1c-v', c+'M'); st('a1p-v', rf(p*100)+'%'); st('a1cp-v', rf(cp*100)+'%');
+  var pro=r-c, cash=rf(r*p-c*cp);
+  st('a1-rv', r+'M');
+  stcl('a1-pr', sg(pro)+pro+'M', 'mv '+cl(pro));
+  stcl('a1-cs', sg(cash)+cash+'M', 'mv '+cl(cash));
+  st('a1-ins', cash<0&&pro>0 ? 'Profitable but cash-negative. Earned Rp '+pro+'M on paper — Rp '+Math.abs(cash)+'M left the bank.' :
+    pro<0&&cash>=0 ? 'Cash-positive but loss-making. The accounting divergence works the other way.' :
+    'Adjust the sliders — watch all three numbers diverge on the exact same transaction.');
+}
+
+function uA2(){
+  var r=iv('a2r'), cgP=iv('a2cg')/100, op=iv('a2op'), dp=iv('a2dp'), tx=iv('a2tx')/100;
+  st('a2r-v', r+'M'); st('a2cg-v', rf(cgP*100)+'%'); st('a2op-v', op+'M'); st('a2dp-v', dp+'M'); st('a2tx-v', rf(tx*100)+'%');
+  var cg=r*cgP, gp=r-cg, eb=gp-op, ei=eb-dp, ta=Math.max(0,ei*tx), np=ei-ta;
+  var rows=[
+    {l:'Revenue', v:r, c:'#378ADD'},
+    {l:'− COGS', v:-cg, c:'#E24B4A'},
+    {l:'= Gross profit', v:gp, c:'#639922', b:1},
+    {l:'− Operating expenses', v:-op, c:'#E24B4A'},
+    {l:'= EBITDA', v:eb, c:'#1D9E75', b:1},
+    {l:'− Depreciation', v:-dp, c:'#BA7517'},
+    {l:'= EBIT', v:ei, c:'#534AB7', b:1},
+    {l:'− Tax ('+rf(tx*100)+'%)', v:-ta, c:'#E24B4A'},
+    {l:'= Net profit', v:np, c:'#0D6B50', b:1}
+  ];
+  var wf = el('a2-wf'); if(!wf) return;
+  wf.innerHTML = rows.map(function(row){
+    var w = Math.min(Math.abs(row.v)/r*100, 100);
+    return '<div class="wf-row"><div class="wf-lbl'+(row.b?' bold':'')+'">'+row.l+'</div>'+
+      '<div class="wf-wrap"><div class="wf-bar" style="width:'+w+'%;background:'+(row.v>=0?row.c:'#E24B4A')+';opacity:'+(row.b?1:.8)+'">'+
+      (w>10?rf(row.v/r*100,0)+'%':'')+'</div></div>'+
+      '<div class="wf-amt" style="color:'+(row.v>=0?'#2d6b0e':'#b02020')+'">'+sg(row.v)+rf(Math.abs(row.v))+'M</div></div>';
+  }).join('');
+  var met = el('a2-met'); if(!met) return;
+  met.innerHTML = '<div class="met"><div class="ml">Gross margin</div><div class="mv" style="color:#C94F28">'+rf(gp/r*100,1)+'%</div></div>'+
+    '<div class="met"><div class="ml">EBITDA margin</div><div class="mv '+cl(eb)+'">'+rf(eb/r*100,1)+'%</div></div>'+
+    '<div class="met"><div class="ml">Net margin</div><div class="mv '+cl(np)+'">'+rf(np/r*100,1)+'%</div></div>';
+}
+
+function uA3(){
+  var r=iv('a3r'), cg=iv('a3cg'), vo=iv('a3vo'), fx=iv('a3fx');
+  st('a3r-v', r+'K'); st('a3cg-v', cg+'K'); st('a3vo-v', vo+'K'); st('a3fx-v', fx+'K');
+  var gp=r-cg, cm=gp-vo, np=cm-fx;
+  var segs=[{l:'COGS',v:cg,c:'#E24B4A'},{l:'Var opex',v:vo,c:'#EF9F27'},{l:'Fixed',v:fx,c:'#85B7EB'},{l:np>=0?'Profit':'Loss',v:Math.abs(np),c:np>=0?'#1D9E75':'#A32D2D'}];
+  var bar=el('a3-bar'); if(bar) bar.innerHTML=segs.map(function(s){ var w=Math.max(0,s.v/r*100); return '<div style="width:'+w+'%;background:'+s.c+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">'+(w>8?s.l:'')+'</div>'; }).join('');
+  var leg=el('a3-leg'); if(leg) leg.innerHTML=segs.map(function(s){ return '<span><span class="leg-dot" style="background:'+s.c+'"></span>'+s.l+': '+s.v+'K</span>'; }).join('');
+  var met=el('a3-met'); if(met) met.innerHTML='<div class="met"><div class="ml">Gross margin</div><div class="mv" style="color:#C94F28">'+rf(gp/r*100,1)+'%</div></div><div class="met"><div class="ml">Contribution margin</div><div class="mv '+cl(cm)+'">'+rf(cm/r*100,1)+'%</div></div><div class="met"><div class="ml">Unit profit</div><div class="mv '+cl(np)+'">'+sg(np)+np+'K</div></div><div class="met"><div class="ml">Net margin</div><div class="mv '+cl(np)+'">'+rf(np/r*100,1)+'%</div></div>';
+  st('a3-ins', np<0 ? 'Unit economics broken — losing '+Math.abs(np)+'K per customer. Scaling makes it worse.' :
+    rf(gp/r*100,1)-rf(cm/r*100,1)>5 ? 'Gross margin ('+rf(gp/r*100,1)+'%) hides what contribution margin ('+rf(cm/r*100,1)+'%) reveals — '+rf(gp/r*100-cm/r*100,1)+'% gap from variable opex.' :
+    'Margins healthy. Variable opex is minimal relative to revenue.');
+}
+
+function uA4(){
+  var dpo=iv('a4po'), dio=iv('a4io'), dso=iv('a4so');
+  st('a4po-v', dpo+' days'); st('a4io-v', dio+' days'); st('a4so-v', dso+' days');
+  var ccc=dso+dio-dpo;
+  stcl('a4-ccc', ccc+' days', 'mv '+(ccc<=0?'pos':ccc>45?'neg':''));
+  stcl('a4-rat', ccc<=0?'Negative (best)':ccc<=20?'Low':ccc<=45?'Medium':'High', 'mv '+(ccc<=0?'pos':ccc>45?'neg':''));
+  var tot=Math.max(dpo+dio+dso,30);
+  var tl=el('a4-tl'); if(!tl) return;
+  var html='<div style="position:absolute;left:0;right:0;top:28px;height:2px;background:#e5e3db"></div>';
+  var mkb=function(left,width,top,color,label){ return '<div style="position:absolute;left:'+left+'%;width:'+width+'%;top:'+top+'px;height:22px;background:'+color+';border-radius:4px;display:flex;align-items:center;padding:0 6px;font-size:10px;font-weight:600;color:#fff">'+label+'</div>'; };
+  if(dpo>0) html+=mkb(0,dpo/tot*100,7,'#1D9E75',dpo+'d supplier');
+  if(dio>0) html+=mkb(dpo/tot*100,dio/tot*100,38,'#EF9F27',dio+'d stock');
+  if(dso>0) html+=mkb((dpo+dio)/tot*100,dso/tot*100,38,'#E24B4A',dso+'d AR');
+  html+='<div style="position:absolute;bottom:0;left:0;font-size:11px;color:#888"><span style="color:#1D9E75">■</span> Supplier &nbsp;<span style="color:#EF9F27">■</span> Inventory &nbsp;<span style="color:#E24B4A">■</span> Receivables</div>';
+  tl.innerHTML=html;
+  st('a4-ins', ccc<=0 ? 'Negative CCC of '+ccc+' days — suppliers fund your operations. Cash arrives before you pay anyone (think supermarkets, Amazon).' : 'CCC of '+ccc+' days. Every rupiah of growth requires '+ccc+' days of upfront cash before it returns.');
+}
+
+function uA4wc(){
+  var ar=iv('a4ar'), iv2=iv('a4iv'), ap=iv('a4ap');
+  st('a4ar-v', ar+'M'); st('a4iv-v', iv2+'M'); st('a4ap-v', ap+'M');
+  var wc=ar+iv2-ap;
+  st('a4-wc', (wc>=0?'':'-')+Math.abs(wc)+'M');
+}
+
+function uA5(){
+  var ca=iv('a5ca'), ar=iv('a5ar'), inv=iv('a5iv'), pe=iv('a5pe');
+  var ap=iv('a5ap'), sd=iv('a5sd'), ld=iv('a5ld');
+  st('a5ca-v', ca.toLocaleString()+'M'); st('a5ar-v', ar.toLocaleString()+'M'); st('a5iv-v', inv.toLocaleString()+'M'); st('a5pe-v', pe.toLocaleString()+'M');
+  st('a5ap-v', ap.toLocaleString()+'M'); st('a5sd-v', sd.toLocaleString()+'M'); st('a5ld-v', ld.toLocaleString()+'M');
+  var cA=ca+ar+inv, tA=cA+pe, cL=ap+sd, tL=cL+ld, eq=tA-tL, cr=cL>0?rf(cA/cL,2):Infinity;
+  var bs=el('a5-bs'); if(!bs) return;
+  var mkRow=function(l,v){ return '<div class="bs-item"><span>'+l+'</span><span>'+v+'M</span></div>'; };
+  bs.innerHTML='<div class="bs-col"><div class="bs-head">Assets</div>'+mkRow('Cash',ca)+mkRow('Receivables',ar)+mkRow('Inventory',inv)+'<div class="bs-sub"><span>Current assets</span><span>'+cA+'M</span></div>'+mkRow('Property & equip',pe)+'<div class="bs-tot"><span>Total assets</span><span>'+tA+'M</span></div></div>'+
+    '<div class="bs-col"><div class="bs-head">Liabilities & equity</div>'+mkRow('Payables',ap)+mkRow('Short-term debt',sd)+'<div class="bs-sub"><span>Current liabilities</span><span>'+cL+'M</span></div>'+mkRow('Long-term debt',ld)+'<div class="bs-item" style="color:'+(eq>=0?'#2d6b0e':'#b02020')+';font-weight:600"><span>Equity (residual)</span><span>'+eq+'M</span></div><div class="bs-tot"><span>Total L + Equity</span><span>'+tA+'M</span></div></div>';
+  var met=el('a5-met'); if(!met) return;
+  met.innerHTML='<div class="met"><div class="ml">Current ratio</div><div class="mv '+(cr>=1.5?'pos':cr>=1?'':'neg')+'">'+cr+'×</div></div><div class="met"><div class="ml">Working capital</div><div class="mv '+cl(cA-cL)+'">'+(cA-cL)+'M</div></div><div class="met"><div class="ml">Equity</div><div class="mv '+cl(eq)+'">'+eq+'M</div></div>';
+  st('a5-ins', eq<0 ? 'Negative equity — liabilities exceed assets. The business is technically insolvent.' : cr<1 ? 'Current ratio below 1 — short-term obligations exceed current assets. Liquidity risk is real.' : 'Balance sheet balances at Rp '+tA.toLocaleString()+'M. Equity of Rp '+eq.toLocaleString()+'M belongs to shareholders.');
+}
+
+// ─── Module B ─────────────────────────────────────────────────────────────────
+function uB1(){
+  var f=iv('b1f'), p=iv('b1p')*1000, vc=iv('b1vc')*1000, vol=iv('b1vl');
+  st('b1f-v', f+'M'); st('b1p-v', rf(p/1000)+'K'); st('b1vc-v', rf(vc/1000)+'K'); st('b1vl-v', vol.toLocaleString());
+  var cm=p-vc, be=cm>0?Math.ceil(f*1e6/cm):Infinity, pro=(cm*vol-f*1e6)/1e6, rev=p*vol/1e6, mg=rev>0?pro/rev*100:0;
+  st('b1-cm', rf(cm/1000)+'K'); st('b1-be', isFinite(be)?be.toLocaleString():'∞');
+  stcl('b1-pr', sg(pro)+rf(pro)+'M', 'mv '+cl(pro));
+  stcl('b1-mg', rf(mg,1)+'%', 'mv '+cl(mg));
+  st('b1-ins', pro>=0 ? 'At '+vol.toLocaleString()+' units — '+(vol-be).toLocaleString()+' above break-even. Each extra unit adds Rp '+rf(cm/1000)+'K directly to profit.' : 'At '+vol.toLocaleString()+' units — '+Math.abs(vol-be).toLocaleString()+' short of break-even. Fixed costs of Rp '+f+'M not yet covered.');
+  var mv=Math.max(isFinite(be)?be*1.8:15000,vol*1.4,5000), pts=12;
+  var lb=Array.from({length:pts},function(_,i){ return rf(i/(pts-1)*mv).toLocaleString(); });
+  mkChart('b1c','line',{labels:lb,datasets:[
+    {data:lb.map(function(_,i){ return rf(i/(pts-1)*mv*p/1e6,1); }),borderColor:'#1357A6',borderWidth:2,pointRadius:0,tension:0},
+    {data:lb.map(function(_,i){ return rf(f+i/(pts-1)*mv*vc/1e6,1); }),borderColor:'#C94F28',borderWidth:2,pointRadius:0,tension:0,borderDash:[5,3]}
+  ]},{scales:{x:{ticks:{color:'#888',maxTicksLimit:6},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{color:'#888',callback:function(v){return v+'M'}},grid:{color:'rgba(0,0,0,0.05)'}}}});
+}
+
+function uB2(){
+  var r=iv('b2r'), cg=iv('b2cg'), vc=iv('b2vc'), fc=iv('b2fc');
+  st('b2r-v', r+'K'); st('b2cg-v', cg+'K'); st('b2vc-v', vc+'K'); st('b2fc-v', fc+'K');
+  var gp=r-cg, cm=gp-vc, np=cm-fc;
+  st('b2-gm', rf(gp/r*100,1)+'%');
+  stcl('b2-cm', rf(cm/r*100,1)+'%', 'mv '+cl(cm));
+  stcl('b2-up', sg(np)+np+'K', 'mv '+cl(np));
+  stcl('b2-nm', rf(np/r*100,1)+'%', 'mv '+cl(np));
+  var segs=[{l:'COGS',v:cg,c:'#E24B4A'},{l:'Variable',v:vc,c:'#EF9F27'},{l:'Fixed',v:fc,c:'#85B7EB'},{l:np>=0?'Profit':'Loss',v:Math.abs(np),c:np>=0?'#1D9E75':'#A32D2D'}];
+  var bar=el('b2-bar'); if(bar) bar.innerHTML=segs.map(function(s){ var w=Math.max(0,s.v/r*100); return '<div style="width:'+w+'%;background:'+s.c+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">'+(w>8?s.l:'')+'</div>'; }).join('');
+  var leg=el('b2-leg'); if(leg) leg.innerHTML=segs.map(function(s){ return '<span><span class="leg-dot" style="background:'+s.c+'"></span>'+s.l+': '+s.v+'K</span>'; }).join('');
+  st('b2-ins', np<0 ? 'Unit economics broken — losing '+Math.abs(np)+'K per customer. Scaling accelerates losses.' : rf(np/r*100,1)<10 ? 'Thin margin of '+rf(np/r*100,1)+'%. Fragile — a small cost rise or price cut flips this negative.' : 'Healthy margin of '+rf(np/r*100,1)+'%. Each customer generates '+np+'K after all costs.');
+}
+
+function uB3(){
+  var cac=iv('b3ca'), rv=iv('b3rv'), cs=iv('b3cs'), lf=iv('b3lf');
+  st('b3ca-v', cac+'K'); st('b3rv-v', rv+'K'); st('b3cs-v', cs+'K'); st('b3lf-v', lf+' mo');
+  var mp=rv-cs, ltv=mp>0?mp*lf:0, ratio=cac>0?rf(ltv/cac,1):0, pb=mp>0?rf(cac/mp,1):null;
+  st('b3-lt', ltv.toLocaleString()+'K');
+  stcl('b3-ra', ratio+'×', 'mv '+(ratio>=3?'pos':ratio>=1?'':'neg'));
+  st('b3-pb', pb!==null?pb+' mo':'∞');
+  stcl('b3-vd', ratio>=3?'Healthy':ratio>=1?'Marginal':'Broken', 'mv '+(ratio>=3?'pos':ratio>=1?'':'neg'));
+  st('b3-ins', ratio<1 ? 'LTV:CAC of '+ratio+'× — spending more acquiring than customers are worth. Every new customer destroys value.' : ratio<3 ? 'Marginal at '+ratio+'×. Any rise in CAC or churn breaks the model.' : 'Healthy '+ratio+'×. Payback in '+pb+' months, then '+(lf-(pb||0))+' months of pure profit per customer.');
+  mkChart('b3c','line',{labels:Array.from({length:lf+1},function(_,i){ return i; }),datasets:[
+    {data:Array.from({length:lf+1},function(_,m){ return rf(-cac+mp*m,1); }),borderColor:'#1357A6',borderWidth:2,pointRadius:0,tension:.2}
+  ]},{scales:{x:{ticks:{color:'#888',maxTicksLimit:8},grid:{color:'rgba(0,0,0,0.05)'},title:{display:true,text:'Month',color:'#888',font:{size:11}}},y:{ticks:{color:'#888',callback:function(v){return v+'K'}},grid:{color:'rgba(0,0,0,0.05)'}}}});
+}
+
+function uB4(){
+  var f=iv('b4f'), p=iv('b4p'), vc=iv('b4vc'), vol=iv('b4vl');
+  st('b4f-v', f+'M'); st('b4p-v', p+'M'); st('b4vc-v', vc+'M'); st('b4vl-v', vol);
+  var cm=p-vc, be=cm>0?Math.ceil(f/cm):Infinity, pro=cm*vol-f, sm=vol-be;
+  stcl('b4-be', isFinite(be)?be+' units':'∞', 'mv');
+  stcl('b4-pr', sg(pro)+rf(pro)+'M', 'mv '+cl(pro));
+  stcl('b4-sm', sg(sm)+rf(sm)+' units', 'mv '+cl(sm));
+  stcl('b4-st', pro>=0?'Above B/E':'Below B/E', 'mv '+cl(pro));
+  var mv=Math.max(isFinite(be)?be*1.9:60,vol*1.5,10), pts=14;
+  var lb=Array.from({length:pts},function(_,i){ return rf(i/(pts-1)*mv); });
+  mkChart('b4c','line',{labels:lb,datasets:[
+    {data:lb.map(function(v){ return rf(p*v,1); }),borderColor:'#1357A6',borderWidth:2,pointRadius:0,tension:0},
+    {data:lb.map(function(v){ return rf(f+vc*v,1); }),borderColor:'#C94F28',borderWidth:2,pointRadius:0,tension:0,borderDash:[5,3]}
+  ]},{scales:{x:{ticks:{color:'#888',maxTicksLimit:7},grid:{color:'rgba(0,0,0,0.05)'},title:{display:true,text:'Units',color:'#888',font:{size:11}}},y:{ticks:{color:'#888',callback:function(v){return v+'M'}},grid:{color:'rgba(0,0,0,0.05)'}}}});
+}
+
+function uB5(){
+  var inv=iv('b5iv'), pr=iv('b5pr'), yr=iv('b5yr');
+  st('b5iv-v', inv+'M'); st('b5pr-v', pr+'M'); st('b5yr-v', yr+' yrs');
+  var roi=rf(pr/inv*100,1), ex=rf(roi-8,1), pb=rf(inv/pr,1);
+  stcl('b5-ro', roi+'%', 'mv '+(roi>8?'pos':roi>0?'':'neg'));
+  stcl('b5-ex', sg(ex)+ex+'%', 'mv '+(ex>=0?'pos':'neg'));
+  st('b5-pb', pb+' yrs');
+  stcl('b5-vd', roi>8?'Deploy':roi>0?'Marginal':'Avoid', 'mv '+(roi>8?'pos':roi>0?'':'neg'));
+  st('b5-ins', roi<8 ? 'ROI of '+roi+'% is below the 8% risk-free rate. Deploying capital here destroys value.' : 'ROI of '+roi+'% clears the hurdle by '+ex+'%. Over '+yr+' years this generates Rp '+rf(pr*yr-inv*.08*yr)+'M more than a bank deposit.');
+  var lb=Array.from({length:yr+1},function(_,i){ return 'Yr '+i; });
+  mkChart('b5c','line',{labels:lb,datasets:[
+    {data:lb.map(function(_,i){ return rf(-inv+pr*i,1); }),borderColor:'#1357A6',borderWidth:2,pointRadius:3,tension:.2},
+    {data:lb.map(function(_,i){ return rf(inv*.08*i,1); }),borderColor:'#999',borderWidth:1.5,pointRadius:0,borderDash:[4,4]}
+  ]},{scales:{x:{ticks:{color:'#888'},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{color:'#888',callback:function(v){return v+'M'}},grid:{color:'rgba(0,0,0,0.05)'}}}});
+}
+
+// ─── Module C ─────────────────────────────────────────────────────────────────
+function uC1(){
+  var pv=iv('c1pv'), r=iv('c1r')/100, n=iv('c1n');
+  st('c1pv-v', pv.toLocaleString()+'M'); st('c1r-v', rf(r*100)+'%'); st('c1n-v', n+' yrs');
+  var fv=rf(pv*Math.pow(1+r,n)), gain=fv-pv, simple=rf(pv*r*n), ce=rf(gain-simple), r72=rf(72/(r*100),1);
+  st('c1-fv', fv.toLocaleString()+'M'); st('c1-gn', '+'+gain.toLocaleString()+'M'); st('c1-ce', '+'+ce.toLocaleString()+'M'); st('c1-r7', r72+' yrs');
+  st('c1-ins', 'At '+rf(r*100)+'% compounded for '+n+' years, Rp '+pv.toLocaleString()+'M grows to Rp '+fv.toLocaleString()+'M. Simple interest gives only Rp '+rf(pv+simple).toLocaleString()+'M — compound adds Rp '+ce.toLocaleString()+'M on top.');
+  mkChart('c1c','line',{labels:Array.from({length:n+1},function(_,i){ return 'Yr '+i; }),datasets:[
+    {data:Array.from({length:n+1},function(_,i){ return rf(pv*Math.pow(1+r,i)); }),borderColor:'#4A41A8',borderWidth:2,pointRadius:1,tension:.3},
+    {data:Array.from({length:n+1},function(_,i){ return rf(pv+pv*r*i); }),borderColor:'#999',borderWidth:1.5,pointRadius:0,borderDash:[4,4]}
+  ]},{scales:{x:{ticks:{color:'#888',maxTicksLimit:8},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{color:'#888',callback:function(v){return v.toLocaleString()+'M'}},grid:{color:'rgba(0,0,0,0.05)'}}}});
+}
+
+function uC1b(){
+  var fv=iv('c1fv2'), r=iv('c1r2')/100, n=iv('c1n2');
+  st('c1fv2-v', fv.toLocaleString()+'M'); st('c1r2-v', rf(r*100)+'%'); st('c1n2-v', n+' yrs');
+  var df=Math.pow(1+r,-n), pv=rf(fv*df), disc=fv-pv;
+  st('c1b-pv', pv.toLocaleString()+'M'); st('c1b-dc', '-'+disc.toLocaleString()+'M'); st('c1b-df', rf(df,3));
+  st('c1b-ins', 'A cash flow of Rp '+fv.toLocaleString()+'M in '+n+' years is worth only Rp '+pv.toLocaleString()+'M today at '+rf(r*100)+'%. The Rp '+disc.toLocaleString()+'M difference is the cost of waiting.');
+}
+
+function uC2(){
+  var inv=iv('c2iv'), cf1=iv('c2cf'), g=iv('c2g')/100, r=iv('c2r')/100, tg=iv('c2tg')/100;
+  st('c2iv-v', inv.toLocaleString()+'M'); st('c2cf-v', cf1+'M'); st('c2g-v', rf(g*100)+'%'); st('c2r-v', rf(r*100)+'%'); st('c2tg-v', rf(tg*100)+'%');
+  var cfs=Array.from({length:5},function(_,i){ return rf(cf1*Math.pow(1+g,i)); });
+  var dcfs=cfs.map(function(cf,i){ return rf(cf/Math.pow(1+r,i+1)); });
+  var sdcf=rf(dcfs.reduce(function(a,b){return a+b;},0));
+  var tvPV=r>tg?rf(cfs[4]*(1+tg)/(r-tg)/Math.pow(1+r,5)):0;
+  var npv=rf(sdcf+tvPV-inv);
+  st('c2-sd', sdcf.toLocaleString()+'M'); st('c2-tv', tvPV.toLocaleString()+'M');
+  stcl('c2-nv', (npv>=0?'+':'')+npv.toLocaleString()+'M', 'mv '+cl(npv));
+  stcl('c2-dc', npv>=0?'Invest':'Reject', 'mv '+cl(npv));
+  st('c2-ins', npv>=0 ? 'NPV of +Rp '+npv.toLocaleString()+'M is positive. Investment creates value above the '+rf(r*100)+'% hurdle rate.' : 'NPV of -Rp '+Math.abs(npv).toLocaleString()+'M is negative. Cash flows do not recover the investment at '+rf(r*100)+'%. Reject or renegotiate.');
+  mkChart('c2c','bar',{labels:['Yr 1','Yr 2','Yr 3','Yr 4','Yr 5'],datasets:[
+    {data:cfs,backgroundColor:'#7F77DD'},
+    {data:dcfs,backgroundColor:'#5DCAA5'}
+  ]},{scales:{x:{ticks:{color:'#888'},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{color:'#888',callback:function(v){return v+'M'}},grid:{color:'rgba(0,0,0,0.05)'}}}});
+}
+
+function uC3(){
+  var en=iv('c3en'), ex=iv('c3ex'), yr=iv('c3yr'), dv=iv('c3dv');
+  st('c3en-v', en.toLocaleString()+'M'); st('c3ex-v', ex.toLocaleString()+'M'); st('c3yr-v', yr+' yrs'); st('c3dv-v', dv+'M');
+  var tot=ex+dv*yr, moic=rf(tot/en,2), irr=rf((Math.pow(tot/en,1/yr)-1)*100,1), pro=rf(tot-en);
+  stcl('c3-mo', moic+'×', 'mv '+(moic>=2?'pos':moic>=1?'':'neg'));
+  stcl('c3-ir', irr+'%', 'mv '+(irr>=20?'pos':irr>=10?'':'neg'));
+  st('c3-pr', sg(pro)+pro.toLocaleString()+'M');
+  var vd=moic>=3&&irr>=25?'Exceptional':moic>=2&&irr>=20?'Strong':moic>=1.5&&irr>=15?'Acceptable':'Weak';
+  stcl('c3-vd', vd, 'mv '+(['Exceptional','Strong'].indexOf(vd)>=0?'pos':vd==='Acceptable'?'':'neg'));
+  st('c3-ins', ['Exceptional','Strong'].indexOf(vd)>=0 ? 'MOIC '+moic+'× and IRR '+irr+'% — both clear PE thresholds (2×+ and 20%+). Strong value creation.' : vd==='Acceptable' ? 'Marginal — one metric below target. A lower entry price improves both numbers.' : 'Neither metric clears PE standards. Capital is better deployed elsewhere.');
+  var lb=Array.from({length:yr+1},function(_,i){ return 'Yr '+i; });
+  mkChart('c3c','line',{labels:lb,datasets:[
+    {data:lb.map(function(_,i){ return rf(i===0?-en:-en+(ex/yr+dv)*i,1); }),borderColor:'#4A41A8',borderWidth:2,pointRadius:2,tension:.2},
+    {data:Array(yr+1).fill(en),borderColor:'#999',borderWidth:1.5,pointRadius:0,borderDash:[4,4]}
+  ]},{scales:{x:{ticks:{color:'#888'},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{color:'#888',callback:function(v){return v.toLocaleString()+'M'}},grid:{color:'rgba(0,0,0,0.05)'}}}});
+}
+
+function uC4(){
+  var bp=iv('c4bp'), bv=iv('c4bv'), mp=iv('c4mp'), mv=iv('c4mv'), wp=iv('c4wp'), wv=iv('c4wv');
+  st('c4bp-v', bp+'%'); st('c4bv-v', bv.toLocaleString()+'M');
+  st('c4mp-v', mp+'%'); st('c4mv-v', (mv>=0?'':'-')+Math.abs(mv).toLocaleString()+'M');
+  st('c4wp-v', wp+'%'); st('c4wv-v', (wv>=0?'':'-')+Math.abs(wv).toLocaleString()+'M');
+  var ps=bp+mp+wp, ev=rf(bp/100*bv+mp/100*mv+wp/100*wv);
+  var pw=el('c4-pw'); if(pw) pw.style.display=ps!==100?'block':'none';
+  stcl('c4-ps', ps+'%', 'mv '+(ps===100?'pos':'neg'));
+  stcl('c4-ev', (ev>=0?'+':'')+ev.toLocaleString()+'M', 'mv '+cl(ev));
+  st('c4-dn', (wv>=0?'+':'')+wv.toLocaleString()+'M');
+  st('c4-up', '+'+bv.toLocaleString()+'M');
+  st('c4-ins', ps!==100 ? 'Adjust probabilities to sum to 100% for a valid expected value.' : ev>=0 ? 'Expected NPV of +Rp '+ev.toLocaleString()+'M. Bull case upside outweighs bear downside on a probability-weighted basis.' : 'Expected NPV of Rp '+ev.toLocaleString()+'M is negative even probability-weighted. Revisit assumptions.');
+  mkChart('c4c','bar',{labels:['Bull case','Base case','Bear case'],datasets:[
+    {data:[bv,mv,wv],backgroundColor:['#3B6D11','#1357A6','#b02020']}
+  ]},{scales:{x:{ticks:{color:'#888'},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{color:'#888',callback:function(v){return v.toLocaleString()+'M'}},grid:{color:'rgba(0,0,0,0.05)'}}}});
+}
+
+// ─── Module D ─────────────────────────────────────────────────────────────────
+var archs={
+  saas:{bg:'#E1F5EE',tc:'#074532',sc:'#0D6B50',gm:'70–90%',cm:'50–75%',fc:'High (eng + sales)',wc:'Negative (annual billing)',moat:'Switching costs + network effects',risk:'Churn, CAC payback, competition'},
+  retail:{bg:'#E6F1FB',tc:'#0B3E7A',sc:'#1357A6',gm:'20–40%',cm:'5–15%',fc:'Moderate (rent + staff)',wc:'High (inventory + AR)',moat:'Brand, location, scale',risk:'Inventory risk, e-commerce pressure'},
+  bank:{bg:'#FAEEDA',tc:'#503300',sc:'#7A5200',gm:'NIM 2–4%',cm:'Spread-based',fc:'High (compliance + tech)',wc:'N/A — funding-driven',moat:'Licence, trust, switching cost',risk:'Credit risk, regulation, rate risk'},
+  mfg:{bg:'#FAECE7',tc:'#7A2F12',sc:'#993C1D',gm:'15–40%',cm:'10–25%',fc:'Very high (plant + equip)',wc:'High (inventory + AR)',moat:'Scale, process IP, long-term contracts',risk:'Capex cycles, commodity price swings'},
+  platform:{bg:'#EEEDFE',tc:'#2E266E',sc:'#4A41A8',gm:'60–95%',cm:'55–90%',fc:'Moderate (tech + ops)',wc:'Often negative',moat:'Network effects (strongest moat)',risk:'Cold start, disintermediation'},
+  services:{bg:'#F1EFE8',tc:'#333',sc:'#555',gm:'30–60%',cm:'20–40%',fc:'Low–moderate',wc:'Low–moderate',moat:'Brand, talent, client relationships',risk:'Key-person risk, utilisation, pricing'}
+};
+function selArch(key, elem){
+  document.querySelectorAll('.arch-card').forEach(function(c){ c.classList.remove('sel'); });
+  elem.classList.add('sel');
+  var a=archs[key], det=el('d1-det'); if(!det) return;
+  var fields=[['Gross margin',a.gm],['Contribution margin',a.cm],['Working capital',a.wc],['Fixed costs',a.fc],['Key moat',a.moat],['Key risk',a.risk]];
+  det.innerHTML='<div style="border-top:1px solid #e5e3db;padding-top:14px"><div class="three">'+
+    fields.map(function(f){ return '<div style="background:'+a.bg+';border-radius:8px;padding:10px"><div style="font-size:11px;font-weight:700;color:'+a.tc+';margin-bottom:3px">'+f[0]+'</div><div style="font-size:12px;color:'+a.sc+'">'+f[1]+'</div></div>'; }).join('')+'</div></div>';
+}
+
+function uD2(){
+  var rv=iv('d2rv'), hf=iv('d2hf'), hv=iv('d2hv')/100, lf=iv('d2lf'), lv=iv('d2lv')/100;
+  st('d2rv-v', rv+'M'); st('d2hf-v', hf+'M'); st('d2hv-v', rf(hv*100)+'%'); st('d2lf-v', lf+'M'); st('d2lv-v', rf(lv*100)+'%');
+  var hp=rf(rv*(1-hv)-hf), lp=rf(rv*(1-lv)-lf), hm=rf(hp/rv*100,1), lm=rf(lp/rv*100,1);
+  stcl('d2-hp', (hp>=0?'+':'')+hp+'M', 'mv '+cl(hp));
+  stcl('d2-hm', hm+'%', 'mv '+cl(hp));
+  stcl('d2-lp', (lp>=0?'+':'')+lp+'M', 'mv '+cl(lp));
+  stcl('d2-lm', lm+'%', 'mv '+cl(lp));
+  st('d2-ins', hp>lp ? 'At Rp '+rv+'M revenue, high-fixed is more profitable by Rp '+Math.abs(hp-lp)+'M. Fixed costs are now an advantage — incremental revenue flows almost entirely to profit.' : 'At Rp '+rv+'M revenue, low-fixed outperforms by Rp '+Math.abs(hp-lp)+'M. High fixed costs are still a liability — break-even not yet cleared.');
+  var mx=rv*1.8, pts=12;
+  var lb=Array.from({length:pts},function(_,i){ return rf(i/(pts-1)*mx)+'M'; });
+  mkChart('d2c','line',{labels:lb,datasets:[
+    {data:lb.map(function(_,i){ return rf(i/(pts-1)*mx*(1-hv)-hf,1); }),borderColor:'#1D9E75',borderWidth:2,pointRadius:0,tension:.2},
+    {data:lb.map(function(_,i){ return rf(i/(pts-1)*mx*(1-lv)-lf,1); }),borderColor:'#BA7517',borderWidth:1.5,pointRadius:0,tension:.2,borderDash:[5,3]}
+  ]},{scales:{x:{ticks:{color:'#888',maxTicksLimit:6},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{color:'#888',callback:function(v){return v+'M'}},grid:{color:'rgba(0,0,0,0.05)'}}}});
+}
+
+function uD3(){
+  var u=iv('d3u'), v=iv('d3v');
+  st('d3u-v', u.toLocaleString()); st('d3v-v', v+'K');
+  var cn=u*(u-1)/2, nv=rf(cn*v/1000,1), lin=rf(u*v/1000,1), mx=lin>0?rf(nv/lin,1):0;
+  st('d3-nv', nv.toLocaleString()+'B'); st('d3-cn', cn.toLocaleString()); st('d3-mx', mx+'×');
+  st('d3-ins', 'With '+u.toLocaleString()+' users there are '+cn.toLocaleString()+' possible connections. Network value ('+nv+'B) is '+mx+'× linear value ('+lin+'B). This gap widens exponentially — why platforms command premium valuations.');
+  var mu=u*1.5, pts=14;
+  var lb=Array.from({length:pts},function(_,i){ return rf(i/(pts-1)*mu); });
+  mkChart('d3c','line',{labels:lb,datasets:[
+    {data:lb.map(function(n){ return rf(n*(n-1)/2*v/1000,1); }),borderColor:'#1D9E75',borderWidth:2,pointRadius:0,tension:.3},
+    {data:lb.map(function(n){ return rf(n*v/1000,1); }),borderColor:'#999',borderWidth:1.5,pointRadius:0,borderDash:[4,4]}
+  ]},{scales:{x:{ticks:{color:'#888',maxTicksLimit:6},grid:{color:'rgba(0,0,0,0.05)'},title:{display:true,text:'Users',color:'#888',font:{size:11}}},y:{ticks:{color:'#888',callback:function(v){return v+'B'}},grid:{color:'rgba(0,0,0,0.05)'}}}});
+}
+
+function uD4(){
+  var dims=[{id:'d4sw',l:'Switching costs'},{id:'d4ne',l:'Network effects'},{id:'d4ca',l:'Cost advantages'},{id:'d4ia',l:'Intangibles'},{id:'d4es',l:'Efficient scale'}];
+  var vals=dims.map(function(d){ var v=iv(d.id); st(d.id+'-v', v+'/10'); return {l:d.l,v:v}; });
+  var tot=vals.reduce(function(a,b){ return a+b.v; },0)*2;
+  var mx=vals.reduce(function(a,b){ return a.v>b.v?a:b; });
+  var mn=vals.reduce(function(a,b){ return a.v<b.v?a:b; });
+  var wd=tot>=70?'Wide':tot>=40?'Moderate':'Narrow', wCl=tot>=70?'pos':tot>=40?'':'neg';
+  stcl('d4-sc', tot+'/100', 'mv '+wCl); stcl('d4-wd', wd, 'mv '+wCl);
+  st('d4-st', mx.l); st('d4-wk', mn.l);
+  var cols=['#1D9E75','#4A41A8','#BA7517','#1357A6','#C94F28'];
+  var bars=el('d4-bars'); if(!bars) return;
+  bars.innerHTML=vals.map(function(d,i){ return '<div class="moat-row"><div class="moat-lbl">'+d.l+'</div><div class="moat-wrap"><div class="moat-bar" style="width:'+d.v*10+'%;background:'+cols[i]+'">'+(d.v>2?d.v+'/10':'')+'</div></div></div>'; }).join('');
+  st('d4-ins', wd==='Wide' ? 'Strong moat of '+tot+'/100 across multiple dimensions. Competitive advantage is durable — price premium and market share are likely to persist.' : wd==='Moderate' ? 'Moderate moat of '+tot+'/100. Some defensibility but not impenetrable. Competitors will probe the weak dimensions first.' : 'Narrow moat of '+tot+'/100. Exposed to competitive attack. Without differentiation, margins compress toward commodity levels.');
+}
+
+function uD5(){
+  var vs=[{id:'d5a',c:'#1D9E75',l:'Organic growth'},{id:'d5b',c:'#4A41A8',l:'M&A'},{id:'d5c',c:'#BA7517',l:'Capex'},{id:'d5d',c:'#1357A6',l:'Buybacks'},{id:'d5e',c:'#C94F28',l:'Dividends'}];
+  var vals=vs.map(function(d){ var v=iv(d.id); st(d.id+'-v', v+'M'); return {c:d.c,l:d.l,v:v}; });
+  var tot=vals.reduce(function(a,b){ return a+b.v; },0);
+  var totEl=el('d5-tot'); if(totEl){ totEl.textContent=tot.toLocaleString()+'M'; totEl.style.color=tot===1000?'#0D6B50':tot>1000?'#b02020':'#854F0B'; }
+  var bars=el('d5-bars'); if(!bars) return;
+  bars.innerHTML=vals.map(function(d){ var w=tot>0?rf(d.v/tot*100):0; return '<div class="alloc-row"><div class="alloc-lbl">'+d.l+'</div><div class="alloc-wrap"><div class="alloc-bar" style="width:'+w+'%;background:'+d.c+'">'+(tot>0&&d.v/tot>.08?d.v+'M':'')+'</div></div><div class="alloc-pct">'+(tot>0?w+'%':'-')+'</div></div>'; }).join('');
+  var gPct=tot>0?rf((vals[0].v+vals[1].v+vals[2].v)/tot*100):0, rPct=tot>0?rf((vals[3].v+vals[4].v)/tot*100):0;
+  st('d5-ins', tot!==1000 ? 'Total: Rp '+tot.toLocaleString()+'M. Adjust sliders to reach exactly Rp 1,000M.' : gPct>=60 ? 'Growth-oriented ('+gPct+'% reinvested). Signals confidence in high-return opportunities. Appropriate when ROIC clearly exceeds cost of capital.' : rPct>=60 ? 'Return-oriented ('+rPct+'% returned to shareholders). Signals mature business with limited high-return reinvestment options.' : 'Balanced — '+gPct+'% reinvested, '+rPct+'% returned. Invest where returns are high, return the rest.');
+  var cv=el('d5ch'); if(!cv) return;
+  if(CH['d5ch']) CH['d5ch'].destroy();
+  CH['d5ch']=new Chart(cv,{type:'doughnut',data:{labels:vals.map(function(v){return v.l;}),datasets:[{data:vals.map(function(v){return v.v;}),backgroundColor:vals.map(function(v){return v.c;}),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{display:true,position:'right',labels:{font:{size:11},boxWidth:12,padding:8}}}}});
+}
+
+// ─── Init on DOMContentLoaded ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function(){
+  // wire sliders
+  var sliderMap={a1r:uA1,a1c:uA1,a1p:uA1,a1cp:uA1,a2r:uA2,a2cg:uA2,a2op:uA2,a2dp:uA2,a2tx:uA2,a3r:uA3,a3cg:uA3,a3vo:uA3,a3fx:uA3,a4po:uA4,a4io:uA4,a4so:uA4,a4ar:uA4wc,a4iv:uA4wc,a4ap:uA4wc,a5ca:uA5,a5ar:uA5,a5iv:uA5,a5pe:uA5,a5ap:uA5,a5sd:uA5,a5ld:uA5,b1f:uB1,b1p:uB1,b1vc:uB1,b1vl:uB1,b2r:uB2,b2cg:uB2,b2vc:uB2,b2fc:uB2,b3ca:uB3,b3rv:uB3,b3cs:uB3,b3lf:uB3,b4f:uB4,b4p:uB4,b4vc:uB4,b4vl:uB4,b5iv:uB5,b5pr:uB5,b5yr:uB5,c1pv:uC1,c1r:uC1,c1n:uC1,c1fv2:uC1b,c1r2:uC1b,c1n2:uC1b,c2iv:uC2,c2cf:uC2,c2g:uC2,c2r:uC2,c2tg:uC2,c3en:uC3,c3ex:uC3,c3yr:uC3,c3dv:uC3,c4bp:uC4,c4bv:uC4,c4mp:uC4,c4mv:uC4,c4wp:uC4,c4wv:uC4,d2rv:uD2,d2hf:uD2,d2hv:uD2,d2lf:uD2,d2lv:uD2,d3u:uD3,d3v:uD3,d4sw:uD4,d4ne:uD4,d4ca:uD4,d4ia:uD4,d4es:uD4,d5a:uD5,d5b:uD5,d5c:uD5,d5d:uD5,d5e:uD5};
+  Object.keys(sliderMap).forEach(function(id){ wire(id, sliderMap[id]); });
+  // run all update functions once
+  [uA1,uA2,uA3,uA4,uA4wc,uA5,uB1,uB2,uB3,uB4,uB5,uC1,uC1b,uC2,uC3,uC4,uD2,uD3,uD4,uD5].forEach(function(fn){ try{fn();}catch(e){} });
+  selArch('saas', document.querySelector('.arch-card.sel'));
+});
+</script>
+</body>
+</html>

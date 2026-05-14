@@ -16,6 +16,7 @@ import Case12 from './Case12_BusinessFluency';
 import Case13 from './Case13_DataSense';
 import Case14 from './Case14_ExecutiveCommunication';
 import Case15 from './Case15_PreliminaryStudy';
+import Case16 from './Case16_PreliminaryStudy';
 
 export const cases = [
   
@@ -276,8 +277,25 @@ export const cases = [
   pinned: true,             // Flag for UI: always show first in library
   component: Case15,
 },
-
-
+  {
+    id: 'case-16',
+    slug: 'subject-matter-primer',
+    number: '16',
+    title: 'The Subject Matter You Need Before the Cases Make Sense',
+    subtitle: 'Read this first. Everything else makes more sense after.',
+    industry: 'Cross-Industry Foundation',
+    firm: 'All Cases',
+    framework: 'P&L · Banking · Insurance · PE · SaaS · Pharma · Supply Chain · Retail · Energy · Consulting',
+    decisionType: 'Foundational Study',
+    difficulty: 'Foundational',
+    region: 'Cross-Regional',
+    readTime: '45 min',
+    accentColor: '#2C3E50',
+    isPreliminary: true,
+    pinned: true,
+    track: 'foundation',
+    component: Case16,
+  },
 ]
 
 export const getCaseBySlug = (slug) => cases.find(c => c.slug === slug)
