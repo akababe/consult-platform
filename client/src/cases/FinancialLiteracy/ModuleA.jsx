@@ -3,7 +3,7 @@ import PaneHeader from './components/PaneHeader.jsx'
 import SliderRow from './components/SliderRow.jsx'
 import MetricCard from './components/MetricCard.jsx'
 import InsightBox from './components/InsightBox.jsx'
-import { calculateA1, calculateA2, formatPercent, formatRupiah, formatSignedRupiah } from './utils/calculations.js'
+import { calculateA1, calculateA2, calculateA3, calculateA4Days, calculateA4WC, calculateA5, formatPercent, formatRupiah, formatSignedRupiah } from './utils/calculations.js'
 
 function A1Pane() {
   const [form, setForm] = useState({
@@ -118,6 +118,282 @@ function A2Pane() {
   )
 }
 
+function A3Pane() {
+  const [form, setForm] = useState({
+    revenuePerUnit: 100,
+    cogsPerUnit: 40,
+    variableOpex: 20,
+    allocatedFixed: 15,
+  })
+
+  const results = useMemo(() => calculateA3(form), [form])
+  const totalCost = form.cogsPerUnit + form.variableOpex + form.allocatedFixed
+  const total = Math.max(1, form.revenuePerUnit)
+
+  return (
+    <div className="finlit-pane active">
+      <PaneHeader
+        badge="A3"
+        title="Margin types"
+        description="Every cost layer has its own purpose. Gross margin buys overhead. Contribution margin funds growth."
+      />
+
+      <div className="finlit-card">
+        <span className="finlit-section-label">Cost structure per unit</span>
+        <SliderRow label="Revenue per unit (Rp K)" min={10} max={500} step={10} value={form.revenuePerUnit} onChange={value => setForm(current => ({ ...current, revenuePerUnit: value }))} formatValue={value => formatRupiah(value, 'K')} />
+        <SliderRow label="COGS per unit (Rp K)" min={0} max={400} step={10} value={form.cogsPerUnit} onChange={value => setForm(current => ({ ...current, cogsPerUnit: value }))} formatValue={value => formatRupiah(value, 'K')} />
+        <SliderRow label="Variable opex per unit (Rp K)" min={0} max={200} step={5} value={form.variableOpex} onChange={value => setForm(current => ({ ...current, variableOpex: value }))} formatValue={value => formatRupiah(value, 'K')} />
+        <SliderRow label="Allocated fixed per unit (Rp K)" min={0} max={100} step={5} value={form.allocatedFixed} onChange={value => setForm(current => ({ ...current, allocatedFixed: value }))} formatValue={value => formatRupiah(value, 'K')} />
+
+        <div className="finlit-seg-legend">
+          {results.segments.map(seg => (
+            <div key={seg.label}>
+              <span className="finlit-seg-legend-dot" style={{ background: seg.color }} />
+              {seg.label}
+            </div>
+          ))}
+        </div>
+
+        <div className="finlit-seg-bar">
+          {results.segments.map(seg => {
+            const width = (seg.value / total) * 100
+            return (
+              <div
+                key={seg.label}
+                className="finlit-seg"
+                style={{
+                  width: `${Math.max(0, width)}%`,
+                  background: seg.color,
+                }}
+              >
+                {width > 8 ? `${Math.round(width)}%` : ''}
+              </div>
+            )
+          })}
+        </div>
+
+        <div className="finlit-metrics">
+          <MetricCard label="Gross margin %" value={formatPercent(results.grossMarginPct)} />
+          <MetricCard label="Contribution margin %" value={formatPercent(results.contributionPct)} />
+          <MetricCard label="EBITDA %" value={formatPercent(results.ebitdaPct)} tone={results.ebitdaPct >= 0 ? 'positive' : 'negative'} />
+        </div>
+
+        <InsightBox>{results.insight}</InsightBox>
+      </div>
+    </div>
+  )
+}
+
+function A4Pane() {
+  const [dayForm, setDayForm] = useState({
+    dso: 30,
+    dio: 45,
+    dpo: 20,
+  })
+
+  const [wcForm, setWcForm] = useState({
+    accountsReceivable: 150,
+    inventory: 200,
+    accountsPayable: 120,
+  })
+
+  const dayResults = useMemo(() => calculateA4Days(dayForm), [dayForm])
+  const wcResults = useMemo(() => calculateA4WC(wcForm), [wcForm])
+
+  const daysTotal = Math.max(1, dayForm.dso + dayForm.dio + Math.abs(dayForm.dpo))
+  const dsoPercent = (dayForm.dso / daysTotal) * 100
+  const dioPercent = (dayForm.dio / daysTotal) * 100
+  const dpoPercent = (Math.abs(dayForm.dpo) / daysTotal) * 100
+
+  return (
+    <div className="finlit-pane active">
+      <PaneHeader
+        badge="A4"
+        title="Working capital"
+        description="How much cash is trapped between paying suppliers and collecting from customers."
+      />
+
+      <div className="finlit-card">
+        <span className="finlit-section-label">Days metrics</span>
+        <SliderRow label="Days Sales Outstanding (DSO)" min={0} max={120} step={5} value={dayForm.dso} onChange={value => setDayForm(current => ({ ...current, dso: value }))} formatValue={value => `${Math.round(value)}d`} />
+        <SliderRow label="Days Inventory Outstanding (DIO)" min={0} max={120} step={5} value={dayForm.dio} onChange={value => setDayForm(current => ({ ...current, dio: value }))} formatValue={value => `${Math.round(value)}d`} />
+        <SliderRow label="Days Payable Outstanding (DPO)" min={0} max={120} step={5} value={dayForm.dpo} onChange={value => setDayForm(current => ({ ...current, dpo: value }))} formatValue={value => `${Math.round(value)}d`} />
+
+        <div className="finlit-ccc-timeline">
+          <div
+            className="finlit-ccc-seg"
+            style={{
+              flex: Math.max(1, dayForm.dpo),
+              background: '#9B7E3A',
+            }}
+          >
+            Supplier buffer ({Math.round(dayForm.dpo)}d)
+          </div>
+          <div
+            className="finlit-ccc-seg"
+            style={{
+              flex: Math.max(1, dayForm.dio),
+              background: '#D97B5D',
+            }}
+          >
+            Inventory hold ({Math.round(dayForm.dio)}d)
+          </div>
+          <div
+            className="finlit-ccc-seg"
+            style={{
+              flex: Math.max(1, dayForm.dso),
+              background: '#B02020',
+            }}
+          >
+            Receivables wait ({Math.round(dayForm.dso)}d)
+          </div>
+        </div>
+
+        <div className="finlit-metrics">
+          <MetricCard label="Cash Conversion Cycle (days)" value={`${Math.round(dayResults.ccc)}d`} tone={dayResults.ccc < 0 ? 'positive' : dayResults.ccc > 60 ? 'negative' : 'neutral'} />
+          <MetricCard label="Cash trap rating" value={dayResults.cashTrapRating} />
+        </div>
+
+        <InsightBox>{dayResults.insight}</InsightBox>
+      </div>
+
+      <div className="finlit-card">
+        <span className="finlit-section-label">Rupiah amounts</span>
+        <SliderRow label="Accounts receivable (Rp M)" min={10} max={500} step={25} value={wcForm.accountsReceivable} onChange={value => setWcForm(current => ({ ...current, accountsReceivable: value }))} formatValue={value => formatRupiah(value)} />
+        <SliderRow label="Inventory (Rp M)" min={10} max={500} step={25} value={wcForm.inventory} onChange={value => setWcForm(current => ({ ...current, inventory: value }))} formatValue={value => formatRupiah(value)} />
+        <SliderRow label="Accounts payable (Rp M)" min={10} max={500} step={25} value={wcForm.accountsPayable} onChange={value => setWcForm(current => ({ ...current, accountsPayable: value }))} formatValue={value => formatRupiah(value)} />
+
+        <div className="finlit-wc-formula">
+          Working Capital = {formatRupiah(wcForm.accountsReceivable)} + {formatRupiah(wcForm.inventory)} − {formatRupiah(wcForm.accountsPayable)} = <strong>{formatRupiah(wcResults.workingCapital)}</strong>
+        </div>
+
+        <InsightBox>The sum of AR and inventory minus what you owe suppliers. This capital must come from equity or debt.</InsightBox>
+      </div>
+    </div>
+  )
+}
+
+function A5Pane() {
+  const [form, setForm] = useState({
+    cash: 100,
+    receivables: 150,
+    inventory: 200,
+    propertyEquipment: 300,
+    payables: 120,
+    shortTermDebt: 80,
+    longTermDebt: 200,
+  })
+
+  const results = useMemo(() => calculateA5(form), [form])
+
+  const assets = [
+    { label: 'Cash', value: form.cash, color: '#3AA655' },
+    { label: 'Receivables', value: form.receivables, color: '#7AB55C' },
+    { label: 'Inventory', value: form.inventory, color: '#A8CF45' },
+    { label: 'PP&E', value: form.propertyEquipment, color: '#C4A35A' },
+  ]
+
+  const liabilities = [
+    { label: 'Payables', value: form.payables, color: '#D97B5D' },
+    { label: 'ST debt', value: form.shortTermDebt, color: '#C4553D' },
+    { label: 'LT debt', value: form.longTermDebt, color: '#B02020' },
+  ]
+
+  const assetTotal = results.totalAssets || 1
+  const liabilityTotal = results.totalLiabilities || 1
+  const equityValue = Math.max(0, results.equity)
+  const equityWithLiab = equityValue + liabilityTotal || 1
+
+  return (
+    <div className="finlit-pane active">
+      <PaneHeader
+        badge="A5"
+        title="The balance sheet"
+        description="What you own (assets) minus what you owe (liabilities) equals what owners have (equity)."
+      />
+
+      <div className="finlit-card">
+        <span className="finlit-section-label">Assets side</span>
+        <div className="finlit-bs-cols">
+          <div>
+            <div className="finlit-bs-col-label">Assets</div>
+            <SliderRow label="Cash (Rp M)" min={10} max={500} step={25} value={form.cash} onChange={value => setForm(current => ({ ...current, cash: value }))} formatValue={value => formatRupiah(value)} />
+            <SliderRow label="Receivables (Rp M)" min={10} max={500} step={25} value={form.receivables} onChange={value => setForm(current => ({ ...current, receivables: value }))} formatValue={value => formatRupiah(value)} />
+            <SliderRow label="Inventory (Rp M)" min={10} max={500} step={25} value={form.inventory} onChange={value => setForm(current => ({ ...current, inventory: value }))} formatValue={value => formatRupiah(value)} />
+            <SliderRow label="PP&E (Rp M)" min={10} max={500} step={25} value={form.propertyEquipment} onChange={value => setForm(current => ({ ...current, propertyEquipment: value }))} formatValue={value => formatRupiah(value)} />
+          </div>
+
+          <div>
+            <div className="finlit-bs-col-label">Liabilities & Equity</div>
+            <SliderRow label="Payables (Rp M)" min={10} max={500} step={25} value={form.payables} onChange={value => setForm(current => ({ ...current, payables: value }))} formatValue={value => formatRupiah(value)} />
+            <SliderRow label="Short-term debt (Rp M)" min={0} max={500} step={25} value={form.shortTermDebt} onChange={value => setForm(current => ({ ...current, shortTermDebt: value }))} formatValue={value => formatRupiah(value)} />
+            <SliderRow label="Long-term debt (Rp M)" min={0} max={500} step={25} value={form.longTermDebt} onChange={value => setForm(current => ({ ...current, longTermDebt: value }))} formatValue={value => formatRupiah(value)} />
+          </div>
+        </div>
+
+        <div className="finlit-bs-bars">
+          <div className="finlit-bs-bar">
+            {assets.map(asset => {
+              const height = (asset.value / assetTotal) * 100
+              return (
+                <div
+                  key={asset.label}
+                  className="finlit-bs-segment"
+                  style={{
+                    flex: Math.max(1, asset.value),
+                    background: asset.color,
+                  }}
+                >
+                  {height > 10 ? `${asset.label} ${Math.round(height)}%` : ''}
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="finlit-bs-bar">
+            {liabilities.map(liability => {
+              const height = (liability.value / equityWithLiab) * 100
+              return (
+                <div
+                  key={liability.label}
+                  className="finlit-bs-segment"
+                  style={{
+                    flex: Math.max(1, liability.value),
+                    background: liability.color,
+                  }}
+                >
+                  {height > 10 ? `${liability.label} ${Math.round(height)}%` : ''}
+                </div>
+              )
+            })}
+            {results.equity !== 0 && (
+              <div
+                className={`finlit-bs-segment ${results.equity < 0 ? 'finlit-bs-equity-neg' : ''}`}
+                style={{
+                  flex: Math.max(1, Math.abs(results.equity)),
+                  background: results.equity >= 0 ? '#3AA655' : '#B02020',
+                }}
+              >
+                {Math.abs(results.equity) > 10 ? `Equity ${Math.round((Math.abs(results.equity) / equityWithLiab) * 100)}%` : ''}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="finlit-metrics">
+          <MetricCard label="Total assets" value={formatRupiah(Math.round(results.totalAssets))} />
+          <MetricCard label="Total liabilities" value={formatRupiah(Math.round(results.totalLiabilities))} />
+          <MetricCard label="Equity" value={formatSignedRupiah(Math.round(results.equity))} tone={results.equity >= 0 ? 'positive' : 'negative'} />
+          <MetricCard label="Debt/Equity ratio" value={results.debtToEquity.toFixed(2)} tone={results.debtToEquity > 2 ? 'negative' : 'neutral'} />
+          <MetricCard label="Current ratio" value={results.currentRatio.toFixed(2)} tone={results.currentRatio >= 1 ? 'positive' : 'negative'} />
+        </div>
+
+        <InsightBox>{results.insight}</InsightBox>
+      </div>
+    </div>
+  )
+}
+
 export default function ModuleA() {
   const [activePane, setActivePane] = useState('a1')
 
@@ -130,13 +406,29 @@ export default function ModuleA() {
         <button className={`finlit-nav-btn module-a ${activePane === 'a2' ? 'active' : ''}`} onClick={() => setActivePane('a2')} type="button">
           A2 Income statement
         </button>
+        <button className={`finlit-nav-btn module-a ${activePane === 'a3' ? 'active' : ''}`} onClick={() => setActivePane('a3')} type="button">
+          A3 Margin types
+        </button>
+        <button className={`finlit-nav-btn module-a ${activePane === 'a4' ? 'active' : ''}`} onClick={() => setActivePane('a4')} type="button">
+          A4 Working capital
+        </button>
+        <button className={`finlit-nav-btn module-a ${activePane === 'a5' ? 'active' : ''}`} onClick={() => setActivePane('a5')} type="button">
+          A5 The balance sheet
+        </button>
       </div>
 
       <div className="finlit-content">
-        {activePane === 'a1' ? <A1Pane /> : <A2Pane />}
-        <div className="finlit-POC-note">
-          Module A is being rolled out in POC order. A3-A5 will follow after A1/A2 validation.
-        </div>
+        {activePane === 'a1' ? (
+          <A1Pane />
+        ) : activePane === 'a2' ? (
+          <A2Pane />
+        ) : activePane === 'a3' ? (
+          <A3Pane />
+        ) : activePane === 'a4' ? (
+          <A4Pane />
+        ) : (
+          <A5Pane />
+        )}
       </div>
     </div>
   )

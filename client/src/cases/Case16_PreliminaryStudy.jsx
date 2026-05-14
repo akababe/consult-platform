@@ -1,6 +1,21 @@
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, Component } from 'react'
 
 const FinancialLiteracy = lazy(() => import('./FinancialLiteracy'))
+
+class ModuleErrorBoundary extends Component {
+  state = { error: null }
+  static getDerivedStateFromError(error) { return { error } }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="highlight-box" style={{ color: 'var(--ink-3)', fontSize: '13px' }}>
+          Module failed to load: {this.state.error.message}
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
 
 const Case16 = () => {
   return (
@@ -745,9 +760,11 @@ const Case16 = () => {
           <p>
             Module A is the first POC slice of the financial literacy builder. It starts with the two core language-of-money panes so the interactive structure can be validated before the rest of the module is migrated.
           </p>
-          <Suspense fallback={<div className="highlight-box">Loading Financial Literacy modules...</div>}>
-            <FinancialLiteracy />
-          </Suspense>
+          <ModuleErrorBoundary>
+            <Suspense fallback={<div className="highlight-box">Loading Financial Literacy modules...</div>}>
+              <FinancialLiteracy />
+            </Suspense>
+          </ModuleErrorBoundary>
         </div>
       </section>
 

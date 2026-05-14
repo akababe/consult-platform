@@ -61,3 +61,101 @@ export function calculateA2({ revenue, cogsPercent, operatingExpenses, depreciat
     netMargin: revenue ? (netProfit / revenue) * 100 : 0,
   }
 }
+
+export function calculateA3({ revenuePerUnit, cogsPerUnit, variableOpex, allocatedFixed }) {
+  const revenue = revenuePerUnit
+  const cogs = cogsPerUnit
+  const grossProfit = revenue - cogs
+  const contributionMargin = grossProfit - variableOpex
+  const ebitda = contributionMargin - allocatedFixed
+
+  const grossMarginPct = revenue ? (grossProfit / revenue) * 100 : 0
+  const contributionPct = revenue ? (contributionMargin / revenue) * 100 : 0
+  const ebitdaPct = revenue ? (ebitda / revenue) * 100 : 0
+
+  const segments = [
+    { label: 'COGS', value: cogs, color: '#B02020' },
+    { label: 'Variable OpEx', value: variableOpex, color: '#D97B5D' },
+    { label: 'Fixed', value: allocatedFixed, color: '#9B7E3A' },
+    { label: 'Net profit', value: ebitda, color: 'var(--accent-3)' },
+  ]
+
+  let insight = "Adjust sliders to see how costs layer on top of revenue. Gross margin is what's left after COGS."
+
+  if (contributionPct > 60) {
+    insight = `Strong contribution margin (${contributionPct.toFixed(0)}%). Most revenue remains after variable costs.`
+  } else if (contributionPct < 20) {
+    insight = `Weak contribution margin (${contributionPct.toFixed(0)}%). High variable costs or low price. Contribution-based businesses live or die by this metric.`
+  }
+
+  return {
+    grossMarginPct,
+    contributionPct,
+    ebitdaPct,
+    segments,
+    insight,
+  }
+}
+
+export function calculateA4Days({ dso, dio, dpo }) {
+  const ccc = dso + dio - dpo
+
+  let cashTrapRating = 'Moderate'
+  if (ccc < 0) {
+    cashTrapRating = 'Negative (cash generative)'
+  } else if (ccc <= 30) {
+    cashTrapRating = 'Low'
+  } else if (ccc <= 60) {
+    cashTrapRating = 'Moderate'
+  } else {
+    cashTrapRating = 'High'
+  }
+
+  let insight = `Cash Conversion Cycle of ${Math.round(ccc)} days. Pay suppliers in ${dpo} days, wait ${dio} days for inventory to sell, and ${dso} days to collect from customers.`
+
+  if (ccc < 0) {
+    insight = `Negative CCC (${Math.round(ccc)} days). You collect from customers before paying suppliers. That's the holy grail — it generates cash as you grow.`
+  } else if (ccc > 60) {
+    insight = `High CCC (${Math.round(ccc)} days). Growth consumes cash rapidly. A business with a long cycle needs working capital financing.`
+  }
+
+  return {
+    ccc,
+    cashTrapRating,
+    insight,
+  }
+}
+
+export function calculateA4WC({ accountsReceivable, inventory, accountsPayable }) {
+  const workingCapital = accountsReceivable + inventory - accountsPayable
+  return {
+    workingCapital,
+  }
+}
+
+export function calculateA5({ cash, receivables, inventory, propertyEquipment, payables, shortTermDebt, longTermDebt }) {
+  const totalAssets = cash + receivables + inventory + propertyEquipment
+  const totalLiabilities = payables + shortTermDebt + longTermDebt
+  const equity = totalAssets - totalLiabilities
+  const debtToEquity = equity !== 0 ? totalLiabilities / equity : 0
+  const currentRatio = (payables + shortTermDebt) !== 0 ? (cash + receivables + inventory) / (payables + shortTermDebt) : 0
+
+  let insight = 'A balanced sheet has assets funded by a healthy mix of liabilities and equity.'
+
+  if (equity < 0) {
+    insight = 'Negative equity. Liabilities exceed assets. The company is technically insolvent.'
+  } else if (currentRatio < 1) {
+    insight = `Current ratio below 1. Short-term assets (${(currentRatio).toFixed(2)}x) don't cover short-term liabilities. Potential liquidity squeeze.`
+  } else if (debtToEquity > 2) {
+    insight = `High leverage (D/E = ${debtToEquity.toFixed(1)}). More than $2 of debt per $1 of equity. Risky in downturns.`
+  }
+
+  return {
+    totalAssets,
+    totalLiabilities,
+    equity,
+    debtToEquity,
+    currentRatio,
+    insight,
+  }
+}
