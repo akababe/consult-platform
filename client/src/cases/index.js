@@ -18,6 +18,8 @@ import Case14 from './Case14_ExecutiveCommunication';
 import Case15 from './Case15_PreliminaryStudy';
 import Case16 from './Case16_PreliminaryStudy';
 import Case17 from './Case17_CLevelBankingDeck';
+import Case18 from './Case18_FMCGMarginDeck';
+import Case19 from './Case19_SaaSUnitEconomicsDeck';
 
 export const cases = [
   
@@ -312,6 +314,38 @@ export const cases = [
     readTime: '30 min',
     accentColor: '#0D3B6E',
     component: Case17,
+  },
+  {
+    id: 'case-18',
+    slug: 'fmcg-margin-deck',
+    number: '18',
+    title: 'The Margin That Was Never Going to Recover by Itself',
+    subtitle: 'The NovaCPG investment committee deck — diagnosis, SKU rationalization, and three decisions.',
+    industry: 'FMCG / Consumer Packaged Goods',
+    firm: 'BCG',
+    framework: 'Gross-to-Net Waterfall + BCG Matrix + Promotional ROI + Price Elasticity',
+    decisionType: 'Board-Level Portfolio Intervention',
+    difficulty: 'Advanced',
+    region: 'Indonesia',
+    readTime: '28 min',
+    accentColor: '#7D2E00',
+    component: Case18,
+  },
+  {
+    id: 'case-19',
+    slug: 'saas-unit-economics-deck',
+    number: '19',
+    title: 'The Cohort Data the Investor Deck Never Showed the Board',
+    subtitle: 'The Karta board deck — cohort LTV reality, international drain, and why to decline the term sheet.',
+    industry: 'Tech / SaaS / Super-App',
+    firm: 'Bain',
+    framework: 'Cohort LTV/CAC + Funnel Decomposition + Contribution Margin Waterfall',
+    decisionType: 'Restructure vs. Raise at Haircut',
+    difficulty: 'Advanced',
+    region: 'Indonesia / Southeast Asia',
+    readTime: '28 min',
+    accentColor: '#3B2F8F',
+    component: Case19,
   },
 ]
 
