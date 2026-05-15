@@ -17,6 +17,7 @@ import Case13 from './Case13_DataSense';
 import Case14 from './Case14_ExecutiveCommunication';
 import Case15 from './Case15_PreliminaryStudy';
 import Case16 from './Case16_PreliminaryStudy';
+import Case17 from './Case17_CLevelBankingDeck';
 
 export const cases = [
   
@@ -295,6 +296,22 @@ export const cases = [
     pinned: true,
     track: 'foundation',
     component: Case16,
+  },
+  {
+    id: 'case-17',
+    slug: 'banking-clevel-deck',
+    number: '17',
+    title: 'Two Banks. One Diagnosis. One Board.',
+    subtitle: 'The retail banking review that connects what the data has been saying all along.',
+    industry: 'Retail Banking / Financial Services',
+    firm: 'McKinsey',
+    framework: 'Minto SCR + CLV Segmentation + Deposit Funnel + Systems Thinking',
+    decisionType: 'Board-Level Strategic Intervention',
+    difficulty: 'Advanced',
+    region: 'Indonesia / Thailand',
+    readTime: '30 min',
+    accentColor: '#0D3B6E',
+    component: Case17,
   },
 ]
 
